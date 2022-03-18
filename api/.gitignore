@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,node
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,node
+# Created by https://www.toptal.com/developers/gitignore/api/windows,linux,macos,node
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,macos,node
 
 ### Linux ###
 *~
@@ -89,6 +89,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+node_modules/.bin
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)
@@ -212,4 +213,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,node
+# End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,node
