@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/gaositd/applicant_registration_back#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "mysql2": "^2.3.3",
     "sequelize": "^6.17.0",
     "xpress": "^2.4.6"
   }
