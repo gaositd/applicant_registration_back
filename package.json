@@ -1,9 +1,26 @@
 {
+  "name": "applicant_registration_back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaositd/applicant_registration_back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaositd/applicant_registration_back/issues"
+  },
+  "homepage": "https://github.com/gaositd/applicant_registration_back#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.17.0",
-    "uuid": "^8.3.2"
+    "sequelize": "^6.17.0"
   }
 }
