@@ -1,6 +1,15 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+const {
+  DATABASE,
+  USER,
+  PASSWORD,
+  HOST,
+  MYSQL
+} = require('../constants/constants.js');
 
-const sequelize = new Sequelize('applicantForm', 'root', '', {
-    host: 'localhost',
-    dialect: /* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
+const db = new Sequelize(DATABASE, USER, PASSWORD, {
+    host: HOST,
+    dialect: MYSQL/* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
   });
+
+  module.exports = db;

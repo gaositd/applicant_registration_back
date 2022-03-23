@@ -4,8 +4,18 @@ const cors = require('cors');
 const express = require('express');
 
 const routeApplicant = require('../routes/routesApplicant');
+const db = require('./databases/dbConnection');
 const server = express();
 const port = process.env.PORT || 3001;
+
+(async ()=>{
+  try {
+    await db.authenticate();
+    console.log('database connection successfully');
+  } catch (error) {
+    throw new Error(`Fail connection ==>> ${error}`);
+  }
+})()
 
 //change strig to json (middleware)
 server.use(express.json());//receive data
