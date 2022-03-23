@@ -1,11 +1,13 @@
 const router = require('express').Router();
 
+const { gender } = require('../models/applicantForm');
 
 module.exports = router;
 
 //get all form questions
-router.get('/', function(req, res) {
-    res.json([]);
+router.get('/', async function(req, res) {
+    const genders = await gender.findAll();
+    res.json(genders);
 });
 //get form by ID
 router.get('/:id', function(req, res) {

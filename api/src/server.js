@@ -13,7 +13,7 @@ const port = process.env.PORT || 3001;
     await db.authenticate();
     console.log('database connection successfully');
   } catch (error) {
-    throw new Error(`Fail connection ==>> ${error}`);
+    msg:`Fail connection ==>> ${error}`;
   }
 })()
 

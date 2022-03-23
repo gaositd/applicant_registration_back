@@ -1,4 +1,17 @@
+//DATABASE NAME
 const DATABASE = "applicantForm";
+
+//TABLES
+const APPLICANTFORM_TABLE = "applicantForm_Table";
+const GENDER = "gender";
+const MARITAL_STATUS = "marital_status";
+const LOCATIONS = "locations";
+const MEXICAN_STATES = "mexican_states";
+const MONTHS = "months";
+const MUNICIPALITIES = "municipalities";
+const SEMESTER = "semester";
+
+//SERVER
 const HOST = "localhost";
 const PORT = 3306;
 const USER = "root";
@@ -10,6 +23,14 @@ const MSSQL = "mssql";
 
 module.exports = {
     DATABASE,
+    APPLICANTFORM_TABLE,
+    GENDER,
+    MARITAL_STATUS,
+    LOCATIONS,
+    MEXICAN_STATES,
+    MONTHS,
+    MUNICIPALITIES,
+    SEMESTER,
     HOST,
     PORT,
     USER,
