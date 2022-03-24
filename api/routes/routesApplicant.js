@@ -1,28 +1,22 @@
 const router = require('express').Router();
 
-const { gender } = require('../models/applicantForm');
+const { mexican_states } = require('../models/applicantForm');
 
 module.exports = router;
 
 //get all form questions
 router.get('/', async function(req, res) {
-    const Gender = await gender.findAll();
-    res.json(Gender);
+    const States = await mexican_states.findAll();
+    console.log(States);
+    res.json(States);
 });
 //get form by ID
 router.get('/:id', function(req, res) {
-    const { id, name, middleName, lastName, state, town, school, stateSchool, townSchool  } = req.params;
-    res.json({
-        id,
-        name:"test",
-        middleName,
-        lastName,
-        state,
-        town,
-        school,
-        stateSchool,
-        townSchool,
-    });
+    const State = mexican_states.findAll(state => state.id === parseInt(req.params.id));
+    // res.json(State);
+    console.log(id);
+    console.log(typeof(id));
+    res.end();
 });
 //create applicant regisatration form
 router.post('/d', function(req, res) {
