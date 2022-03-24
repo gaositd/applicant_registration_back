@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, STRING } = require("sequelize");
 
 const db = require("../src/databases/dbConnection");
 const { 
@@ -13,10 +13,10 @@ const {
  } = require('../src/constants/constants.js');
 
 const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
-    idApplicant:{
-        type:DataTypes.STRING(40),
+    id:{
+        type:DataTypes.INTEGER,
         primaryKey:true,
-        allowNull: false,
+        autoIncrement: true,
         unique: true
     },
     captureDate:{
@@ -49,7 +49,7 @@ const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
         comment:'Date of birth',
     },
     birthCertificate:{
-        type:DataTypes.STRING,
+        type:DataTypes.TEXT,
         allowNull: false,
         comment:'Route of the birth Certificate file',
     },
@@ -59,7 +59,7 @@ const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
         comment:'C.U.R.P text',
     },
     curpPdf:{
-        type:DataTypes.STRING,
+        type:DataTypes.TEXT,
         allowNull: false,
         comment:'Route of the curp file',
     },
@@ -88,12 +88,12 @@ const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
         comment:'Id of town of school',
     },
     certificateLastSchool:{
-        type:DataTypes.STRING,
+        type:DataTypes.TEXT,
         allowNull: false,
         comment:'Route of the certificate last school file',
     },
     miniPicture:{
-        type:DataTypes.TIME,
+        type:DataTypes.TEXT,
         allowNull: false,
         comment:'Route of the mini picture file',
     },
@@ -147,6 +147,12 @@ const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
     },
 });
 const gender = db.define(GENDER,{
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
     long_name:{
         type:DataTypes.STRING(20),
     },
@@ -158,22 +164,210 @@ const gender = db.define(GENDER,{
     }
 });
 const marital_status = db.define(MARITAL_STATUS,{
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    long_name:{
+        type:DataTypes.STRING(40),
+        allowNull:false,
+        comment:'Palabra completa del estado civil',
+    },
+    short_name:{
+        type:DataTypes.STRING(3),
+        allowNull:false,
+        comment: 'abreviatura a 3 letras del estado civil',
+    },
+    description:{
+        type:DataTypes.STRING,
+        comment:'Significado del estado civil',
+    },
 });
 const locations = db.define(LOCATIONS, {
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    id_town:{
+        type:DataTypes.INTEGER,
+        unique: true,
+        allowNull:false,
+        comment:'Relación: municipios -> id',
+    },
+    key:{
+        type:DataTypes.STRING(3),
+        allowNull:false,
+        comment:'CVE_LOC – Clave de la localidad'
+    },
+    name:{
+        type:DataTypes.STRING(100),
+        allowNull:false,
+        comment:'NOM_LOC – Nombre de la localidad',
+    },
+    latitude:{
+        type:DataTypes.STRING(15),
+        allowNull:false,
+        comment:'LATITUD – Latitud (en DMS)',
+    },
+    lenght:{
+        type:DataTypes.STRING(15),
+        allowNull:false,
+        comment:'LONGITUD – Longitud (en DMS)',
+    },
+    altitude:{
+        type:DataTypes.STRING(15),
+        allowNull:false,
+        comment:'ALTITUD – Altitud',
+    },
+    letter:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+    },
+    ambit:{
+        type:DataTypes.STRING(1),
+        allowNull:false,
+        comment:'AMBITO',
+    },
+    population:{
+        type:DataTypes.INTEGER,
+        comment:'PTOT – Población Total',
+    },
+    male:{
+        type:DataTypes.INTEGER,
+        comment:'Población masculina',
+    },
+    female:{
+        type:DataTypes.INTEGER,
+        comment:'Población femenina',
+    },
+    houses:{
+        type:DataTypes.INTEGER,
+        comment:'VTOT – Número total de viviendas',
+    },
+    lat:{
+        type:DataTypes.DECIMAL(10,7),
+        allowNull:false,
+        comment:'Latitud en decimal',
+    },
+    lng:{
+        type:DataTypes.DECIMAL(10,7),
+        allowNull:false,
+        comment:'Longitud en decimal',
+    },
+    active:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        comment:'Municipio activo o inactivo (borrado lógico)',
+    },
 });
 const mexican_states = db.define(MEXICAN_STATES, {
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    key:{
+        type:DataTypes.STRING(2),
+        allowNull:false,
+        comment:'CVE_ENT - Clave de la entidad',
+    },
+    name:{
+        type:DataTypes.STRING(40),
+        allowNull:false,
+        comment:'NOM_ENT - Nombre de la entidad',
+    },
+    short_name:{
+        type:DataTypes.STRING(10),
+        comment:'NOM_ABR - Nombre abreviado de la entidad',
+    },
+    active:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+        comment:'NOM_ABR - Nombre abreviado de la entidad',
+    },
 });
 const months = db.define(MONTHS,{
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    spanishMonth:{
+        type:DataTypes.STRING(20),
+        allowNull:false,
+        comment:'Nombre del mes en español',
+    },
+    spanishMonth:{
+        type:DataTypes.STRING(20),
+        allowNull:false,
+        comment:'Nombre del mes en ingles',
+    },
+    shortNameSpanish:{
+        type:DataTypes.STRING(3),
+        allowNull:false,
+        comment:'Nombre del mes en español (abreviatura)',
+    },
+    shortNameEnglish:{
+        type:DataTypes.STRING(3),
+        allowNull:false,
+        comment:'Nombre del mes en ingles (abreviatura)',
+    }
 });
 const municipalities = db.define(MUNICIPALITIES,{
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    id_states:{
+        type:DataTypes.INTEGER,
+        allowNull:false,
+        comment:'Relación: estados -> id',
+    },
+    key:{
+        type:DataTypes.STRING(3),
+        allowNull:false,
+        comment:'CVE_MUN – Clave del municipio',
+    },
+    name:{
+        type:DataTypes.STRING(100),
+        allowNull:false,
+        comment:'NOM_MUN – Nombre del municipio',
+    },
+    active:{
+        type:DataTypes.BOOLEAN,
+        allowNull:false,
+    },
 });
 const semester = db.define(SEMESTER,{
-
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    initialMonth:{
+        type:DataTypes.STRING(20),
+        allowNull:false,
+        comment:'initial month of semester',
+    },
+    finishMonth:{
+        type:DataTypes.STRING(20),
+        allowNull:false,
+        comment:'finish month of semester',
+    },
+    cycle:{
+        type:DataTypes.STRING(1),
+        allowNull:false,
+        comment:'Cycle A or B',
+    },
 });
 
 module.exports = {

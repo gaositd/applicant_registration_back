@@ -11,6 +11,7 @@ const port = process.env.PORT || 3001;
 (async ()=>{
   try {
     await db.authenticate();
+    await db.sync();
     console.log('database connection successfully');
   } catch (error) {
     msg:`Fail connection ==>> ${error}`;

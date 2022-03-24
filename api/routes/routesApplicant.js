@@ -6,8 +6,8 @@ module.exports = router;
 
 //get all form questions
 router.get('/', async function(req, res) {
-    const genders = await gender.findAll();
-    res.json(genders);
+    const Gender = await gender.findAll();
+    res.json(Gender);
 });
 //get form by ID
 router.get('/:id', function(req, res) {
