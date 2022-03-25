@@ -163,7 +163,7 @@ const gender = db.define(GENDER,{
         type:DataTypes.STRING(3),
     }
 });
-const marital_status = db.define(MARITAL_STATUS,{
+const marital_statuses = db.define(MARITAL_STATUS,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -373,7 +373,7 @@ const semester = db.define(SEMESTER,{
 module.exports = {
     applicantForm_Table,
     gender,
-    marital_status,
+    marital_statuses,
     locations,
     mexican_states,
     months,

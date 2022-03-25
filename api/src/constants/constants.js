@@ -21,6 +21,9 @@ const MARIADB = "mariadb";
 const POSTGRES = "postgres";
 const MSSQL = "mssql";
 
+//routes
+const STATE_NOT_FOUND = 'State not found';
+
 module.exports = {
     DATABASE,
     APPLICANTFORM_TABLE,
@@ -39,4 +42,5 @@ module.exports = {
     MARIADB,
     POSTGRES,
     MSSQL,
+    STATE_NOT_FOUND,
 }
