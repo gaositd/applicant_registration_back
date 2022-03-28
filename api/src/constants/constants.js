@@ -10,6 +10,7 @@ const MEXICAN_STATES = "mexican_states";
 const MONTHS = "months";
 const MUNICIPALITIES = "municipalities";
 const SEMESTER = "semester";
+const DISABILITIES = 'disabilities';
 
 //SERVER
 const HOST = "localhost";
@@ -34,6 +35,7 @@ module.exports = {
     MONTHS,
     MUNICIPALITIES,
     SEMESTER,
+    DISABILITIES,
     HOST,
     PORT,
     USER,

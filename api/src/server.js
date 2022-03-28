@@ -5,6 +5,7 @@ const express = require('express');
 
 const routeApplicant = require('../routes/routesApplicantForm');
 const routesMexicanStates = require('../routes/routesMexicanStates');
+const routesDisabilities = require('../routes/routesDisabilities');
 const db = require('./databases/dbConnection');
 const server = express();
 const port = process.env.PORT || 3001;
@@ -25,6 +26,7 @@ server.use(cors());//Enabling other applications to make requests to our app
 
 server.use('/form',routeApplicant);
 server.use('/states',routesMexicanStates);
+server.use('/disability', routesDisabilities);
 
 server.listen(port, function() {
   console.log(`App running on http://localhost:${port}/`);

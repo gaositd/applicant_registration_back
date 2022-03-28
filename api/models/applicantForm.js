@@ -10,6 +10,7 @@ const {
     MONTHS,
     MUNICIPALITIES,
     SEMESTER,
+    DISABILITIES,
  } = require('../src/constants/constants.js');
 
 const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
@@ -369,6 +370,24 @@ const semester = db.define(SEMESTER,{
         comment:'Cycle A or B',
     },
 });
+const disabilities =db.define(DISABILITIES,{
+    id:{
+        type:DataTypes.INTEGER,
+        primaryKey:true,
+        autoIncrement: true,
+        unique: true
+    },
+    description:{
+        type:DataTypes.STRING(100),
+        allowNull: false,
+        comment: 'Disability description',
+    },
+    language:{
+        type:DataTypes.STRING(3),
+        allowNull: false,
+        comment:'Language description',
+    },
+})
 
 module.exports = {
     applicantForm_Table,
@@ -379,4 +398,5 @@ module.exports = {
     months,
     municipalities,
     semester,
+    disabilities,
 }
