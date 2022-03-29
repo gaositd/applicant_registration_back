@@ -18,9 +18,9 @@ router.use(cors());//Enabling other applications to make requests to our server
 
 router.get('/disabilities', async function(req, res){
   const disability = await disabilities.findAll();
-  
-  console.log(disability);
-  if(disability) res.json(disabilities)
+  console.log(JSON.stringify(disability));
+
+  if(disability) res.json(disability)
   else res.status(500)
          .json({
              msg: SERVER_ERROR
