@@ -370,7 +370,7 @@ const semester = db.define(SEMESTER,{
         comment:'Cycle A or B',
     },
 });
-const disabilities =db.define(DISABILITIES,{
+const disabilities = db.define(DISABILITIES,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,

@@ -15,12 +15,14 @@ const DISABILITIES = 'disabilities';
 //SERVER
 const HOST = "localhost";
 const PORT = 3306;
+const PORT_SERVER = 3001;
 const USER = "root";
 const PASSWORD = "";
 const MYSQL = "mysql";
 const MARIADB = "mariadb";
 const POSTGRES = "postgres";
 const MSSQL = "mssql";
+const SERVER_ERROR = "server error"
 
 //routes
 const STATE_NOT_FOUND = 'State not found';
@@ -44,5 +46,6 @@ module.exports = {
     MARIADB,
     POSTGRES,
     MSSQL,
+    SERVER_ERROR,
     STATE_NOT_FOUND,
 }
