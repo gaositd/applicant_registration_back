@@ -1,19 +1,19 @@
-const { DataTypes, STRING } = require("sequelize");
+const { DataTypes } = require("sequelize");
 
 const db = require("../src/databases/dbConnection");
-const { 
-    APPLICANTFORM_TABLE,
-    GENDER,
-    MARITAL_STATUS,
-    LOCATIONS,
-    MEXICAN_STATES,
-    MONTHS,
-    MUNICIPALITIES,
-    SEMESTER,
-    DISABILITIES,
- } = require('../src/constants/constants.js');
+// const { 
+//     APPLICANTFORM_TABLE,
+//     GENDER,
+//     MARITAL_STATUS,
+//     LOCATIONS,
+//     MEXICAN_STATES,
+//     MONTHS,
+//     MUNICIPALITIES,
+//     SEMESTER,
+//     DISABILITIES,
+//  } = require('../src/constants/constants.js');
 
-const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
+const applicantForm_Table = db.define(process.env.APPLICANTFORM_TABLE,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -147,7 +147,7 @@ const applicantForm_Table = db.define(APPLICANTFORM_TABLE,{
         comment:'Id of disability',
     },
 });
-const gender = db.define(GENDER,{
+const gender = db.define(process.env.GENDER,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -164,7 +164,7 @@ const gender = db.define(GENDER,{
         type:DataTypes.STRING(3),
     }
 });
-const marital_statuses = db.define(MARITAL_STATUS,{
+const marital_statuses = db.define(process.env.MARITAL_STATUS,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -186,7 +186,7 @@ const marital_statuses = db.define(MARITAL_STATUS,{
         comment:'Significado del estado civil',
     },
 });
-const locations = db.define(LOCATIONS, {
+const locations = db.define(process.env.LOCATIONS, {
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -265,7 +265,7 @@ const locations = db.define(LOCATIONS, {
         comment:'Municipio activo o inactivo (borrado lógico)',
     },
 });
-const mexican_states = db.define(MEXICAN_STATES, {
+const mexican_states = db.define(process.env.MEXICAN_STATES, {
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -292,7 +292,7 @@ const mexican_states = db.define(MEXICAN_STATES, {
         comment:'NOM_ABR - Nombre abreviado de la entidad',
     },
 });
-const months = db.define(MONTHS,{
+const months = db.define(process.env.MONTHS,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -320,7 +320,7 @@ const months = db.define(MONTHS,{
         comment:'Nombre del mes en ingles (abreviatura)',
     }
 });
-const municipalities = db.define(MUNICIPALITIES,{
+const municipalities = db.define(process.env.MUNICIPALITIES,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -347,7 +347,7 @@ const municipalities = db.define(MUNICIPALITIES,{
         allowNull:false,
     },
 });
-const semester = db.define(SEMESTER,{
+const semester = db.define(process.env.SEMESTER,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -370,7 +370,7 @@ const semester = db.define(SEMESTER,{
         comment:'Cycle A or B',
     },
 });
-const disabilities = db.define(DISABILITIES,{
+const disabilities = db.define(process.env.DISABILITIES,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,

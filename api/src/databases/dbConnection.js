@@ -1,14 +1,13 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const { Sequelize } = require('sequelize');
-const {
-  DATABASE,
-  USER,
-  PASSWORD,
-  HOST,
-  MYSQL
-} = require('../constants/constants.js');
+const { MYSQL } = require('../constants/constants.js');
 
-const db = new Sequelize(DATABASE, USER, PASSWORD, {
-    host: HOST,
+console.log("\n\n\n");
+console.log(process.env);
+console.log("\n\n\n");
+const db = new Sequelize(process.env.DATABASE, process.env.USR, process.env.PASSWORD, {
+    host: process.env.HOST,
     dialect: MYSQL/* one of 'mysql' | 'mariadb' | 'postgres' | 'mssql' */
   });
 

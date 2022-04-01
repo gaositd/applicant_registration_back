@@ -23,6 +23,6 @@ router.get('/disabilities', async function(req, res){
   if(disability) res.json(disability)
   else res.status(500)
          .json({
-             msg: SERVER_ERROR
+             msg: process.env.SERVER_ERROR
          })
 });
