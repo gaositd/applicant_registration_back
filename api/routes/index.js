@@ -24,8 +24,21 @@ router.get('/disabilities', async function(req, res){
   })
   .then(disabilities => {
     const disability = JSON.stringify(disabilities);
-    console.log(disability);
+    // console.log(disability);
     res.status(200).json(disabilities);})
+  .catch(err => {
+      res.status(500)
+         .json({msg: `${process.env.SERVER_ERROR} ${err}`})
+    });
+});
+
+router.get('/maritalstatus', async function(req, res){
+
+  const disability = await marital_statuses.findAll({ 
+    where: {language :'esp'},
+  })
+  .then(marital_statuses => {
+    res.status(200).json(marital_statuses);})
   .catch(err => {
       res.status(500)
          .json({msg: `${process.env.SERVER_ERROR} ${err}`})

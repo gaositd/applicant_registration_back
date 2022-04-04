@@ -1,17 +1,6 @@
 const { DataTypes } = require("sequelize");
 
 const db = require("../src/databases/dbConnection");
-// const { 
-//     APPLICANTFORM_TABLE,
-//     GENDER,
-//     MARITAL_STATUS,
-//     LOCATIONS,
-//     MEXICAN_STATES,
-//     MONTHS,
-//     MUNICIPALITIES,
-//     SEMESTER,
-//     DISABILITIES,
-//  } = require('../src/constants/constants.js');
 
 const applicantForm_Table = db.define(process.env.APPLICANTFORM_TABLE,{
     id:{
@@ -184,6 +173,11 @@ const marital_statuses = db.define(process.env.MARITAL_STATUS,{
     description:{
         type:DataTypes.STRING,
         comment:'Significado del estado civil',
+    },
+    language:{
+        type:DataTypes.STRING(3),
+        allowNull: false,
+        comment:'Language description',
     },
 });
 const locations = db.define(process.env.LOCATIONS, {
