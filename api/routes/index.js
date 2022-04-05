@@ -32,7 +32,7 @@ router.get('/disabilities', async function(req, res){
     });
 });
 
-router.get('/maritalstatus', async function(req, res){
+router.get('/marital_statuses', async function(req, res){
 
   const disability = await marital_statuses.findAll({ 
     where: {language :'esp'},
