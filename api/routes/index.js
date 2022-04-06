@@ -77,3 +77,22 @@ router.get('/genders', function(req, res) {
           });
     });
 });
+
+router.get('/municipalities/:id_states', (req, res)=>{
+  const {id_states} = req.params;
+  const municipal = municipalities.findAll({
+    where:{
+      id_states
+    }
+  })
+  .then(municipalities =>{
+    res.status(200)
+       .json(municipalities);
+  })
+  .catch(err =>{
+    res.status(500)
+       .json({
+          msg:`${process.env.SERVER_ERROR} ${err}`
+        });
+  });
+});
