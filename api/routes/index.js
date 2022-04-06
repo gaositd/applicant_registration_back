@@ -32,11 +32,12 @@ router.get('/disabilities', async function(req, res){
     });
 });
 
-router.get('/marital_statuses', async function(req, res){
+router.get('/marital_statuses', function(req, res){
 
-  const disability = await marital_statuses.findAll({ 
-    where: {language :'esp'},
-  })
+  // const disability = await marital_statuses.findAll({ 
+  //   where: {language :'esp'},
+  // })
+  marital_statuses.findAll()
   .then(marital_statuses => {
     res.status(200).json(marital_statuses);})
   .catch(err => {
