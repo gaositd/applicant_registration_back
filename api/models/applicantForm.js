@@ -136,7 +136,7 @@ const applicantForm_Table = db.define(process.env.APPLICANTFORM_TABLE,{
         comment:'Id of disability',
     },
 });
-const gender = db.define(process.env.GENDER,{
+const genders = db.define(process.env.GENDER,{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
@@ -385,7 +385,7 @@ const disabilities = db.define(process.env.DISABILITIES,{
 
 module.exports = {
     applicantForm_Table,
-    gender,
+    genders,
     marital_statuses,
     locations,
     mexican_states,
