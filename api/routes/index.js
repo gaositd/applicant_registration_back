@@ -18,7 +18,6 @@ router.use(cors());//Enabling other applications to make requests to our server
 router.get('/disabilities', async function(req, res){
   const { description, language } = req.query;
 
-  // const disability = await disabilities.findAll({ atribute: description, language })
   const disability = await disabilities.findAll({ 
     where: {language :'esp'},
   })
@@ -34,9 +33,6 @@ router.get('/disabilities', async function(req, res){
 
 router.get('/marital_statuses', function(req, res){
 
-  // const disability = await marital_statuses.findAll({ 
-  //   where: {language :'esp'},
-  // })
   // marital_statuses.findAll()//funciona
   marital_statuses.findAll({//alias fields
     attributes:['id', ['long_name','description'], ['description','full_description']]
