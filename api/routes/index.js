@@ -77,6 +77,7 @@ router.get('/genders', function(req, res) {
 router.get('/municipalities/:id_states', (req, res)=>{
   const {id_states} = req.params;
   const municipal = municipalities.findAll({
+    attributes:['id',['name','description']],
     where:{
       id_states
     }
