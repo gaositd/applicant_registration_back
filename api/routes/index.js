@@ -7,7 +7,7 @@ const {
   mexican_states, months,
   municipalities, semester,
 } = require('../models/applicantForm');
-const { SERVER_ERROR } = require('../src/constants/constants.js');
+const { SERVER_ERROR, NO_ID } = require('../src/constants/constants.js');
 const router = express.Router();
 
 module.exports = router;
@@ -76,20 +76,35 @@ router.get('/genders', function(req, res) {
 
 router.get('/municipalities/:id_states', (req, res)=>{
   const {id_states} = req.params;
-  const municipal = municipalities.findAll({
-    attributes:['id',['name','description']],
-    where:{
-      id_states
-    }
-  })
-  .then(municipalities =>{
-    res.status(200)
-       .json(municipalities);
-  })
-  .catch(err =>{
-    res.status(500)
-       .json({
-          msg:`${process.env.SERVER_ERROR} ${err}`
-        });
-  });
+  
+  if(id_states !== 'undefined'){
+    const municipal = municipalities.findAll({
+      attributes:['id',['name','description']],
+      where:{
+        id_states
+      }
+    })
+    .then(municipalities =>{
+      res.status(200)
+         .json(municipalities);
+    })
+    .catch(err =>{
+      res.status(500)
+         .json({
+            msg:`${process.env.SERVER_ERROR} ${err}`
+          });
+    });
+  }else{
+    const municipal = municipalities.findAll()
+      .then(municipalities => {
+        res.status(200)
+           .json(municipalities)
+      })
+      .catch(err =>{
+        res.status(500)
+           .json({
+            msg:`${process.env.SERVER_ERROR} ${err}`
+          });
+      });
+  }
 });
