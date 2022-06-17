@@ -6,7 +6,6 @@ const server = express();
 const port = process.env.PORT || 3001;
 
 //passport
-// const cookieSession = require('cookie-session');
 const cookieSession = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
@@ -18,12 +17,6 @@ const { session } = require('passport');
 server.use(express.json());
 server.use(router);
 
-//passport
-// server.use(cookieSession({
-//   name:"session",
-//   keys:["test"],
-//   maxAge:24*60*60*100,
-// }));
 server.use(cookieSession({
   secret: "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",
   resave: false,
@@ -51,4 +44,3 @@ server.use("/auth", authRoute);
 })()
 
 server.listen(port,() => console.log(`Server run on port ${port}`));
-//npm install passport-google-oauth20
