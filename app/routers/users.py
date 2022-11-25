@@ -1,8 +1,10 @@
 from fastapi import APIRouter
 
+users = []
 
-router = APIRouter(prefix="/users")
+router = APIRouter()
+
 
 @router.get("/")
 def getUsers():
-    return {"message": "Este es el endpoint de usuarios"}
+    return {"message": "Read all users"}

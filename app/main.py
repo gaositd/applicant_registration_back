@@ -1,21 +1,11 @@
 from fastapi import FastAPI
 from .routers import users
-print("Este es un mensaje de bienvenida!")
 
-app = FastAPI(
-)
+app = FastAPI()
+
 
 @app.get("/")
-async def helloWorld():
-    return {"message": "Hola mundo mundial!"}
+def helloWorld():
+    return "Hello World!"
 
-
-@app.post("/")
-async def helloWorld():
-    return {"message": "Hola mundo mundial!"}
-
-# Aqui se incluye a la app un router
-app.include_router(users.router)
-
-
-
+app.include_router(router=users.router, prefix="/users", tags=['users'])
