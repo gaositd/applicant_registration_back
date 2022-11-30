@@ -3,3 +3,5 @@ app\__pycache__\*
 postgres-data
 __pycache__/
 *.py[cod]
+
+**/__pycache__
