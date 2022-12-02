@@ -1,21 +1,40 @@
-version: "3.7"
+version: '3.7'
+
 services:
   app:
-    build: .
-    ports:
-      - "5000:5000"
+    container_name: pre-scription-back
+    build:
+      context: .
+
     volumes:
-      - .:/code
-  db:
-    image: postgres:14.1-alpine
-    restart: always
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+    ports:
+      - 4242:4242
+
+    # env_file:
+    #   - .env
+
+    networks:
+      - pre-scription-service
+
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    networks:
+      - pre-scription-service
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'prescriptiondb'
+      PG_DATA: /var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
-      - db:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
+
+networks:
+  pre-scription-service:
 volumes:
-  db:
-    driver: local
+  pgdata:

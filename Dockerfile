@@ -1,11 +1,11 @@
-FROM python:3.10.8
+FROM node:18 
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY requirements.txt requirements.txt
+COPY package*.json ./
 
-RUN pip install -r requirements.txt
+RUN npm install 
 
-COPY . . 
+COPY . .
 
-CMD [ "python3", "-m" , "uvicorn", "app.main:app", "--port 4242"]
+CMD ["npm", "run", "start"]
