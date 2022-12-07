@@ -10,6 +10,11 @@ const config: Options = {
   password: 'postgres',
   dbName: 'prescriptiondb',
   debug: process.env.NODE_ENV !== 'production',
+  migrations: {
+    path: './src/migrations',
+    transactional: true,
+    emit: 'ts',
+  },
 };
 
 export default config;

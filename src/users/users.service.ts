@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { query } from 'express';
 import { User } from 'src/models/user';
+import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
 
@@ -25,5 +25,15 @@ export class UsersService {
     await this.em.persistAndFlush(newUser);
 
     return newUser;
+  }
+
+  async update(id: number, userData: UpdateUserDTO) {
+    const user = await this.em.fork().findOne(User, { id });
+
+    const updatedUser = Object.assign(user, userData);
+
+    await this.em.fork().persistAndFlush(updatedUser);
+
+    return 'El usuario ha sido registrado con exito';
   }
 }
