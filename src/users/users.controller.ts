@@ -6,7 +6,10 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { UsersService } from './users.service';
@@ -38,5 +41,19 @@ export class UsersController {
     if (!id) throw new BadRequestException('No se recibio el id');
 
     return this.usersService.update(id, userData);
+  }
+
+  @Post('/upload/:documentType')
+  @UseInterceptors(FileInterceptor('documento'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
+    if (file)
+      return {
+        message: file.originalname,
+      };
+
+    return {
+      message: 'Archivo no valido',
+    };
   }
 }
