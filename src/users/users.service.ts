@@ -1,6 +1,10 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import * as path from 'path';
 import { User } from 'src/models/user';
+import { DOCUMENT_TYPE } from 'src/utils/types';
+import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
@@ -35,5 +39,32 @@ export class UsersService {
     await this.em.fork().persistAndFlush(updatedUser);
 
     return 'El usuario ha sido registrado con exito';
+  }
+
+  async uploadDocument(
+    file: Express.Multer.File,
+    documentType: typeof DOCUMENT_TYPE,
+    matricula: string,
+  ) {
+    try {
+      const newPath = path.join('./uploads', getCurrentPeriod(), matricula);
+
+      if (!fs.existsSync(newPath)) fs.mkdirSync(newPath, { recursive: true });
+
+      fs.writeFileSync(
+        path.join(newPath, getFileName(documentType, file.originalname)),
+        file.buffer,
+      );
+
+      return {
+        message: 'El archivo se ha subido satisfactoriamente',
+        filename: file.filename,
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        message: error.message,
+      };
+    }
   }
 }

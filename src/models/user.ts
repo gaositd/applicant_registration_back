@@ -20,8 +20,8 @@ export class User extends BaseModel {
   @Unique()
   matricula: string;
 
-  @Property({ nullable: true })
-  isDeleted = false;
+  @Property({ nullable: true, type: 'boolean', default: false })
+  isDeleted: boolean;
 
   @Enum(() => USER_ROLES)
   role: USER_ROLES_TYPE;

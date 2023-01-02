@@ -13,6 +13,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(3000);
+  console.log('Running on port 4242');
+  await app.listen(4242);
 }
 bootstrap();
