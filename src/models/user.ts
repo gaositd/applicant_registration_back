@@ -21,7 +21,7 @@ export class User extends BaseModel {
   matricula: string;
 
   @Property()
-  pasword: string;
+  password: string;
 
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
