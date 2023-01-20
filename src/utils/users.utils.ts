@@ -2,7 +2,7 @@ import { DOCUMENT_TYPE } from './types';
 
 export const getCurrentPeriod = () => {
   const currDate = new Date();
-  if (currDate.getMonth() >= 1 && currDate.getMonth() <= 7)
+  if (currDate.getMonth() >= 0 && currDate.getMonth() <= 7)
     return `Enero-Junio-${currDate.getFullYear()}`;
 
   return `Agosto-Diciembre-${currDate.getFullYear()}`;

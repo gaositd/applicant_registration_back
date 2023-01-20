@@ -20,6 +20,9 @@ export class User extends BaseModel {
   @Unique()
   matricula: string;
 
+  @Property()
+  pasword: string;
+
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
 

@@ -13,6 +13,10 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors({
+    origin: 'http://localhost:3000',
+  });
+
   console.log('Running on port 4242');
   await app.listen(4242);
 }
