@@ -29,14 +29,14 @@ export class UsersService {
   async create(userData: UserRegisterDTO) {
     const hashedPassword = await hash(
       userData.password,
-      this.configService.get<number>('HASH_SALT_ROUNDS'),
+      parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
     );
 
     const newUser = this.em
       .fork()
       .create(User, { ...userData, password: hashedPassword });
 
-    newUser.matricula = createMatricula();
+    newUser.matricula = createMatricula(12);
 
     await this.em.persistAndFlush(newUser);
 

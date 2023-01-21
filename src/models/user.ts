@@ -26,6 +26,6 @@ export class User extends BaseModel {
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
 
-  @Enum(() => USER_ROLES)
+  @Enum({ items: () => USER_ROLES, default: USER_ROLES.PROSPECTO })
   role: USER_ROLES_TYPE;
 }
