@@ -7,7 +7,7 @@ enum USER_ROLES {
   PROSPECTO = 'prospecto',
 }
 
-type USER_ROLES_TYPE = Record<USER_ROLES, string>;
+export type USER_ROLES_TYPE = Record<USER_ROLES, string>;
 @Entity()
 export class User extends BaseModel {
   @Property()

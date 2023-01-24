@@ -1,14 +1,12 @@
 import { Options } from '@mikro-orm/postgresql';
 import { User } from './models/user';
+require('dotenv').config();
 
 const config: Options = {
   type: 'postgresql',
   entities: [User],
-  host: 'localhost',
   port: 5432,
-  user: 'postgres',
-  password: 'postgres',
-  dbName: 'prescriptiondb',
+  clientUrl: process.env.DB_CONN_STRING,
   debug: process.env.NODE_ENV !== 'production',
   migrations: {
     path: './src/migrations',
