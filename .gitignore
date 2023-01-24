@@ -38,3 +38,7 @@ node_modules
 
 #uploads folder
 /uploads
+
+#ENV files
+
+.env

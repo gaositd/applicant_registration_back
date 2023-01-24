@@ -7,7 +7,7 @@ enum USER_ROLES {
   PROSPECTO = 'prospecto',
 }
 
-type USER_ROLES_TYPE = Record<USER_ROLES, string>;
+export type USER_ROLES_TYPE = Record<USER_ROLES, string>;
 @Entity()
 export class User extends BaseModel {
   @Property()
@@ -20,9 +20,12 @@ export class User extends BaseModel {
   @Unique()
   matricula: string;
 
+  @Property()
+  password: string;
+
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
 
-  @Enum(() => USER_ROLES)
+  @Enum({ items: () => USER_ROLES, default: USER_ROLES.PROSPECTO })
   role: USER_ROLES_TYPE;
 }

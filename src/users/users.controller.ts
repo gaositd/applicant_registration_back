@@ -10,11 +10,15 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+import { Request } from 'express';
+import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { RequestType } from 'src/types';
 import { DOCUMENT_TYPE } from 'src/utils/types';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
@@ -49,6 +53,7 @@ export class UsersController {
     return this.usersService.update(id, userData);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('documento'))
   async uploadFile(
@@ -62,6 +67,7 @@ export class UsersController {
     )
     file: Express.Multer.File,
     @Query('fileType') document: string,
+    @Req() req: RequestType,
   ) {
     if (!file)
       return {
@@ -71,7 +77,7 @@ export class UsersController {
     return await this.usersService.uploadDocument(
       file,
       DOCUMENT_TYPE[document],
-      'TEST_MATRICULA',
+      req.user.matricula,
     );
   }
 }

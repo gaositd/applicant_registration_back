@@ -63,6 +63,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "is_deleted": {
           "name": "is_deleted",
           "type": "boolean",
@@ -80,6 +89,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "'prospecto'",
           "enumItems": [
             "admin",
             "secretaria",

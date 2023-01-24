@@ -8,10 +8,15 @@ import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
+import { hash } from 'bcrypt';
+import { ConfigService } from '@nestjs/config/dist/config.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly em: EntityManager) {}
+  constructor(
+    private readonly em: EntityManager,
+    private readonly configService: ConfigService,
+  ) {}
 
   async find() {
     return this.em.find(User, {});
@@ -22,9 +27,16 @@ export class UsersService {
   }
 
   async create(userData: UserRegisterDTO) {
-    const newUser = this.em.fork().create(User, userData);
+    const hashedPassword = await hash(
+      userData.password,
+      parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
+    );
 
-    newUser.matricula = createMatricula();
+    const newUser = this.em
+      .fork()
+      .create(User, { ...userData, password: hashedPassword });
+
+    newUser.matricula = createMatricula(12);
 
     await this.em.persistAndFlush(newUser);
 
