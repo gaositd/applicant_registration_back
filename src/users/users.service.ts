@@ -79,4 +79,6 @@ export class UsersService {
       };
     }
   }
+
+  async findDocs() {}
 }

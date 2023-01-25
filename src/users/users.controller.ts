@@ -33,6 +33,11 @@ export class UsersController {
     return this.usersService.find();
   }
 
+  @Get('/docs/:id')
+  async getUserDocs() {
+    return this.usersService.findDocs();
+  }
+
   @Get('/:id')
   async findUser(@Param('id') id: string | number) {
     return this.usersService.findOne({

@@ -1,5 +1,13 @@
-import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  Enum,
+  OneToMany,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { BaseModel } from './base';
+import { UserDocuments } from './user_documents';
 
 enum USER_ROLES {
   ADMIN = 'admin',
@@ -28,4 +36,7 @@ export class User extends BaseModel {
 
   @Enum({ items: () => USER_ROLES, default: USER_ROLES.PROSPECTO })
   role: USER_ROLES_TYPE;
+
+  @OneToMany(() => UserDocuments, (docs) => docs.user)
+  Documentos = new Collection<UserDocuments>(this);
 }
