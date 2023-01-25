@@ -1,4 +1,11 @@
-import { Enum, ManyToMany, ManyToOne, Property, Unique } from '@mikro-orm/core';
+import {
+  Entity,
+  Enum,
+  ManyToMany,
+  ManyToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { BaseModel } from './base';
 
 enum CONFIG {
@@ -9,6 +16,7 @@ enum CONFIG {
 
 export type CONFIG_TYPE = Record<CONFIG, string>;
 
+@Entity()
 export class Configuration extends BaseModel {
   @Enum(() => CONFIG)
   configType: CONFIG_TYPE;

@@ -81,4 +81,8 @@ export class UsersService {
   }
 
   async findDocs() {}
+
+  async populateInitialUserDocuments(user: User) {
+    await user.Documentos.init();
+  }
 }

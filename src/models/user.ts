@@ -2,6 +2,7 @@ import {
   Collection,
   Entity,
   Enum,
+  ManyToMany,
   OneToMany,
   Property,
   Unique,
@@ -37,6 +38,6 @@ export class User extends BaseModel {
   @Enum({ items: () => USER_ROLES, default: USER_ROLES.PROSPECTO })
   role: USER_ROLES_TYPE;
 
-  @OneToMany(() => UserDocuments, (docs) => docs.user)
-  Documentos = new Collection<UserDocuments>(this);
+  @ManyToMany({ entity: () => UserDocuments, owner: true })
+  documentos = new Collection<UserDocuments>(this);
 }
