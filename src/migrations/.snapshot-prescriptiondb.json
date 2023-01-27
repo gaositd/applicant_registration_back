@@ -69,7 +69,7 @@
           "mappedType": "string"
         }
       },
-      "name": "configuration",
+      "name": "configs",
       "schema": "public",
       "indexes": [
         {
@@ -77,12 +77,70 @@
             "name"
           ],
           "composite": false,
-          "keyName": "configuration_name_unique",
+          "keyName": "configs_name_unique",
           "primary": false,
           "unique": true
         },
         {
-          "keyName": "configuration_pkey",
+          "keyName": "configs_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "'NOW()'",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "observacion": {
+          "name": "observacion",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "documents_observaciones",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "documents_observaciones_pkey",
           "columnNames": [
             "id"
           ],
@@ -262,15 +320,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "boolean"
-        },
-        "observaciones": {
-          "name": "observaciones",
-          "type": "text[]",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "array"
         }
       },
       "name": "user_documents",
@@ -300,8 +349,8 @@
           "nullable": false,
           "mappedType": "integer"
         },
-        "configuration_id": {
-          "name": "configuration_id",
+        "documents_observaciones_id": {
+          "name": "documents_observaciones_id",
           "type": "int",
           "unsigned": false,
           "autoincrement": false,
@@ -310,14 +359,14 @@
           "mappedType": "integer"
         }
       },
-      "name": "user_documents_documentos",
+      "name": "user_documents_observaciones",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "user_documents_documentos_pkey",
+          "keyName": "user_documents_observaciones_pkey",
           "columnNames": [
             "user_documents_id",
-            "configuration_id"
+            "documents_observaciones_id"
           ],
           "composite": true,
           "primary": true,
@@ -326,12 +375,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "user_documents_documentos_user_documents_id_foreign": {
-          "constraintName": "user_documents_documentos_user_documents_id_foreign",
+        "user_documents_observaciones_user_documents_id_foreign": {
+          "constraintName": "user_documents_observaciones_user_documents_id_foreign",
           "columnNames": [
             "user_documents_id"
           ],
-          "localTableName": "public.user_documents_documentos",
+          "localTableName": "public.user_documents_observaciones",
           "referencedColumnNames": [
             "id"
           ],
@@ -339,16 +388,16 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "user_documents_documentos_configuration_id_foreign": {
-          "constraintName": "user_documents_documentos_configuration_id_foreign",
+        "user_documents_observaciones_documents_observaciones_id_foreign": {
+          "constraintName": "user_documents_observaciones_documents_observaciones_id_foreign",
           "columnNames": [
-            "configuration_id"
+            "documents_observaciones_id"
           ],
-          "localTableName": "public.user_documents_documentos",
+          "localTableName": "public.user_documents_observaciones",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.configuration",
+          "referencedTableName": "public.documents_observaciones",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

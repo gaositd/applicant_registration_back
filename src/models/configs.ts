@@ -17,7 +17,7 @@ enum CONFIG {
 export type CONFIG_TYPE = Record<CONFIG, string>;
 
 @Entity()
-export class Configuration extends BaseModel {
+export class Configs extends BaseModel {
   @Enum(() => CONFIG)
   configType: CONFIG_TYPE;
 

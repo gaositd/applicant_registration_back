@@ -3,7 +3,6 @@ import {
   Entity,
   Enum,
   ManyToMany,
-  OneToMany,
   Property,
   Unique,
 } from '@mikro-orm/core';

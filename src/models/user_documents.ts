@@ -1,6 +1,12 @@
-import { Collection, Entity, ManyToMany, Property } from '@mikro-orm/core';
+import {
+  Cascade,
+  Collection,
+  Entity,
+  ManyToMany,
+  Property,
+} from '@mikro-orm/core';
 import { BaseModel } from './base';
-import { Configuration } from './configs';
+import { Documents_Observaciones } from './documents_observaciones';
 
 @Entity()
 export class UserDocuments extends BaseModel {
@@ -10,9 +16,10 @@ export class UserDocuments extends BaseModel {
   @Property()
   isValid: boolean;
 
-  @Property()
-  observaciones: String[];
-
-  @ManyToMany({ entity: () => Configuration, owner: true })
-  documentos = new Collection<Configuration>(this);
+  @ManyToMany({
+    entity: () => Documents_Observaciones,
+    owner: true,
+    cascade: [Cascade.ALL],
+  })
+  observaciones = new Collection<Documents_Observaciones>(this);
 }
