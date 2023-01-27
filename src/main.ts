@@ -4,10 +4,13 @@ import * as session from 'express-session';
 import { AppModule } from './app.module';
 import * as Passport from 'passport';
 import * as pgSimple from 'connect-pg-simple';
+import { AppService } from './app.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableShutdownHooks();
+
+  app.get(AppService).subscribeToShutdown(() => app.close());
 
   app.useGlobalPipes(
     new ValidationPipe({
