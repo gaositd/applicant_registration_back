@@ -36,6 +36,154 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "config_type": {
+          "name": "config_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "value",
+            "user_config",
+            "app_config"
+          ],
+          "mappedType": "enum"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "value": {
+          "name": "value",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "configs",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "name"
+          ],
+          "composite": false,
+          "keyName": "configs_name_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "configs_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "'NOW()'",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "observacion": {
+          "name": "observacion",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        }
+      },
+      "name": "documents_observaciones",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "documents_observaciones_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "'NOW()'",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
         "nombre": {
           "name": "nombre",
           "type": "varchar(255)",
@@ -122,6 +270,223 @@
       ],
       "checks": [],
       "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "'NOW()'",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "mappedType": "datetime"
+        },
+        "file_type": {
+          "name": "file_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "curp",
+            "acta_nacimiento",
+            "comprobante_domicilio"
+          ],
+          "mappedType": "enum"
+        },
+        "ruta": {
+          "name": "ruta",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'reviewing'",
+          "enumItems": [
+            "approved",
+            "reviewing",
+            "rejected"
+          ],
+          "mappedType": "enum"
+        }
+      },
+      "name": "user_documents",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_documents_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "user_documents_id": {
+          "name": "user_documents_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "documents_observaciones_id": {
+          "name": "documents_observaciones_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "user_documents_observaciones",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_documents_observaciones_pkey",
+          "columnNames": [
+            "user_documents_id",
+            "documents_observaciones_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "user_documents_observaciones_user_documents_id_foreign": {
+          "constraintName": "user_documents_observaciones_user_documents_id_foreign",
+          "columnNames": [
+            "user_documents_id"
+          ],
+          "localTableName": "public.user_documents_observaciones",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user_documents",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "user_documents_observaciones_documents_observaciones_id_foreign": {
+          "constraintName": "user_documents_observaciones_documents_observaciones_id_foreign",
+          "columnNames": [
+            "documents_observaciones_id"
+          ],
+          "localTableName": "public.user_documents_observaciones",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.documents_observaciones",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "user_documents_id": {
+          "name": "user_documents_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
+        }
+      },
+      "name": "user_documentos",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "user_documentos_pkey",
+          "columnNames": [
+            "user_id",
+            "user_documents_id"
+          ],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "user_documentos_user_id_foreign": {
+          "constraintName": "user_documentos_user_id_foreign",
+          "columnNames": [
+            "user_id"
+          ],
+          "localTableName": "public.user_documentos",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "user_documentos_user_documents_id_foreign": {
+          "constraintName": "user_documentos_user_documents_id_foreign",
+          "columnNames": [
+            "user_documents_id"
+          ],
+          "localTableName": "public.user_documentos",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.user_documents",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
     }
   ]
 }
