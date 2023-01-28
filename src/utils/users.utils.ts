@@ -1,4 +1,4 @@
-import { DOCUMENT_TYPE } from './types';
+import { FileTypeInterface } from 'src/models/user_documents';
 
 export const getCurrentPeriod = () => {
   const currDate = new Date();
@@ -8,10 +8,7 @@ export const getCurrentPeriod = () => {
   return `Agosto-Diciembre-${currDate.getFullYear()}`;
 };
 
-export const getFileName = (
-  documento: typeof DOCUMENT_TYPE,
-  fileName: string,
-) => {
+export const getFileName = (documento: FileTypeInterface, fileName: string) => {
   const ext = fileName.split('.').pop();
 
   return `${documento}.${ext}`;

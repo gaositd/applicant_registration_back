@@ -16,14 +16,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
-import { DOCUMENT_TYPE } from 'src/utils/types';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { UsersService } from './users.service';
 
+@UseGuards(AuthenticatedGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -33,9 +33,9 @@ export class UsersController {
     return this.usersService.find();
   }
 
-  @Get('/docs/:id')
-  async getUserDocs() {
-    return this.usersService.findDocs();
+  @Get('/docs/')
+  async getUserDocs(@Req() req: RequestType) {
+    return this.usersService.findDocs(req.user.matricula);
   }
 
   @Get('/:id')
@@ -49,13 +49,6 @@ export class UsersController {
   @Post('/')
   async newUser(@Body() userData: UserRegisterDTO) {
     return this.usersService.create(userData);
-  }
-
-  @Put('/:id')
-  async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
-    if (!id) throw new BadRequestException('No se recibio el id');
-
-    return this.usersService.update(id, userData);
   }
 
   @UseGuards(AuthenticatedGuard)
@@ -81,8 +74,15 @@ export class UsersController {
 
     return await this.usersService.uploadDocument(
       file,
-      DOCUMENT_TYPE[document],
+      FileType[document],
       req.user.matricula,
     );
+  }
+
+  @Put('/:id')
+  async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
+    if (!id) throw new BadRequestException('No se recibio el id');
+
+    return this.usersService.update(id, userData);
   }
 }

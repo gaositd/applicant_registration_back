@@ -1,16 +1,19 @@
 import { EntityManager } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import { User } from 'src/models/user';
-import { DOCUMENT_TYPE } from 'src/utils/types';
 import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
 import { hash } from 'bcrypt';
 import { ConfigService } from '@nestjs/config/dist/config.service';
-
+import {
+  FileType,
+  FileTypeInterface,
+  UserDocuments,
+} from 'src/models/user_documents';
 @Injectable()
 export class UsersService {
   constructor(
@@ -38,6 +41,26 @@ export class UsersService {
 
     newUser.matricula = createMatricula(12);
 
+    const documentsRawFile = fs.readFileSync(
+      path.resolve(__dirname, './../../config/documents.json'),
+      'utf-8',
+    );
+
+    type documentFileType = {
+      document: string;
+      fileType: string[];
+    };
+
+    const documents: documentFileType[] = JSON.parse(documentsRawFile);
+
+    documents.forEach((document) =>
+      newUser.documentos.add(
+        this.em.create(UserDocuments, {
+          fileType: FileType[document.document],
+        }),
+      ),
+    );
+
     await this.em.persistAndFlush(newUser);
 
     return newUser;
@@ -55,10 +78,22 @@ export class UsersService {
 
   async uploadDocument(
     file: Express.Multer.File,
-    documentType: typeof DOCUMENT_TYPE,
+    documentType: FileTypeInterface,
     matricula: string,
   ) {
     try {
+      const user = await this.em.findOneOrFail(
+        User,
+        {
+          matricula,
+        },
+        { populate: ['documentos'] },
+      );
+
+      const documents = user.documentos.getItems();
+
+      documents.find((document) => document.fileType === documentType);
+
       const newPath = path.join('./uploads', getCurrentPeriod(), matricula);
 
       if (!fs.existsSync(newPath)) fs.mkdirSync(newPath, { recursive: true });
@@ -80,9 +115,21 @@ export class UsersService {
     }
   }
 
-  async findDocs() {}
+  async findDocs(matricula: string) {
+    try {
+      const user = await this.em.findOneOrFail(
+        User,
+        {
+          matricula,
+        },
+        { populate: ['documentos'] },
+      );
 
-  async populateInitialUserDocuments(user: User) {
-    await user.documentos.init();
+      return {
+        documentos: user.documentos,
+      };
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

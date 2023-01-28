@@ -303,23 +303,43 @@
           "length": 6,
           "mappedType": "datetime"
         },
+        "file_type": {
+          "name": "file_type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "curp",
+            "acta_nacimiento",
+            "comprobante_domicilio"
+          ],
+          "mappedType": "enum"
+        },
         "ruta": {
           "name": "ruta",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "string"
         },
-        "is_valid": {
-          "name": "is_valid",
-          "type": "boolean",
+        "status": {
+          "name": "status",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "boolean"
+          "default": "'reviewing'",
+          "enumItems": [
+            "approved",
+            "reviewing",
+            "rejected"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "user_documents",
