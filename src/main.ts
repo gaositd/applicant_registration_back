@@ -18,6 +18,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: 'http://localhost:3000',
+    credentials: true,
   });
 
   const pgSession = pgSimple(session);
@@ -29,6 +30,7 @@ async function bootstrap() {
       saveUninitialized: false,
       cookie: {
         maxAge: 1000 * 60 * 60 * 2,
+        secure: false,
       },
       store: new pgSession({
         conString: process.env.DB_CONN_STRING,
