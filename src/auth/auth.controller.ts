@@ -12,14 +12,8 @@ export class AuthController {
   }
 
   @UseGuards(AuthenticatedGuard)
-  @Get('/hello')
-  async helloTest() {
-    return 'Hello Worlds';
-  }
-
-  @UseGuards(AuthenticatedGuard)
   @Get('/me')
   async me(@Req() req: RequestType) {
-    return req.user;
+    return { user: req.user };
   }
 }
