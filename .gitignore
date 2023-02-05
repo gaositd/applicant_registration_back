@@ -42,3 +42,8 @@ node_modules
 #ENV files
 
 .env
+
+
+#Lock files
+package-lock.json
+yarn.lock
