@@ -10,7 +10,6 @@ import { createMatricula } from './utils';
 import { hash } from 'bcrypt';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import {
-  FileStatus,
   FileType,
   FileTypeInterface,
   UserDocuments,
@@ -54,13 +53,15 @@ export class UsersService {
 
     const documents: documentFileType[] = JSON.parse(documentsRawFile);
 
-    documents.forEach((document) =>
+    documents.forEach((document) => {
+      console.log(FileType[document.document]);
+
       newUser.documentos.add(
         this.em.create(UserDocuments, {
           fileType: FileType[document.document],
         }),
-      ),
-    );
+      );
+    });
 
     await this.em.persistAndFlush(newUser);
 

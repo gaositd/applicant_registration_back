@@ -1,14 +1,14 @@
 [
   {
-    "document": "CURP",
+    "document": "curp",
     "filetypes": ["png", "jpg", "pdf"]
   },
   {
-    "document": "ACTA_NACIMIENTO",
+    "document": "acta_nacimiento",
     "filetypes": ["png", "jpg", "pdf"]
   },
   {
-    "document": "COMPROBANTE_DOMICILIO",
+    "document": "comprobante_domicilio",
     "filetypes": ["png", "jpg", "pdf"]
   }
 ]
