@@ -333,11 +333,12 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "'reviewing'",
+          "default": "'open-to-upload'",
           "enumItems": [
             "approved",
             "reviewing",
-            "rejected"
+            "rejected",
+            "open-to-upload"
           ],
           "mappedType": "enum"
         }

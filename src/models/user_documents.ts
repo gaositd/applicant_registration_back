@@ -10,12 +10,12 @@ import { BaseModel } from './base';
 import { Documents_Observaciones } from './documents_observaciones';
 
 export enum FileType {
-  CURP = 'curp',
-  ACTA_NACIMIENTO = 'acta_nacimiento',
-  COMPROBANTE_DOMICILIO = 'comprobante_domicilio',
+  curp = 'curp',
+  acta_nacimiento = 'acta_nacimiento',
+  comprobante_domicilio = 'comprobante_domicilio',
 }
 
-export type FileTypeInterface = Record<FileType, string>;
+export type FileTypeInterface = `${FileType}`;
 
 export enum FileStatus {
   APPROVED = 'approved',
@@ -24,7 +24,7 @@ export enum FileStatus {
   OPENTOUPLUAD = 'open-to-upload',
 }
 
-export type FileStatusType = Record<FileStatus, string>;
+export type FileStatusType = `${FileStatus}`;
 @Entity()
 export class UserDocuments extends BaseModel {
   @Enum(() => FileType)
@@ -33,7 +33,7 @@ export class UserDocuments extends BaseModel {
   @Property({ nullable: true })
   ruta?: string;
 
-  @Enum({ items: () => FileStatus, default: FileStatus.REVIEWING })
+  @Enum({ items: () => FileStatus, default: FileStatus.OPENTOUPLUAD })
   status: FileStatusType;
 
   @ManyToMany({
