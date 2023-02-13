@@ -111,7 +111,7 @@ export class UsersService {
 
       fs.writeFileSync(FullPath, file.buffer);
 
-      await this.em.persistAndFlush(user);
+      await this.em.persistAndFlush(document);
 
       return {
         message: 'El archivo se ha subido satisfactoriamente',
