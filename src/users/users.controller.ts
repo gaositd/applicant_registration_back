@@ -17,6 +17,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { Public } from 'src/auth/guards/public.guard';
 import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
 import { UpdateUserDTO } from './dto/updateData.dto';
@@ -46,6 +47,7 @@ export class UsersController {
     });
   }
 
+  @Public()
   @Post('/')
   async newUser(@Body() userData: UserRegisterDTO) {
     return this.usersService.create(userData);

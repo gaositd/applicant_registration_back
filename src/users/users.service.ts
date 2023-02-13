@@ -53,13 +53,15 @@ export class UsersService {
 
     const documents: documentFileType[] = JSON.parse(documentsRawFile);
 
-    documents.forEach((document) =>
+    documents.forEach((document) => {
+      console.log(FileType[document.document]);
+
       newUser.documentos.add(
         this.em.create(UserDocuments, {
           fileType: FileType[document.document],
         }),
-      ),
-    );
+      );
+    });
 
     await this.em.persistAndFlush(newUser);
 
@@ -90,18 +92,26 @@ export class UsersService {
         { populate: ['documentos'] },
       );
 
-      const documents = user.documentos.getItems();
+      const document = user.documentos
+        .getItems()
+        .find((document) => document.fileType === documentType);
 
-      documents.find((document) => document.fileType === documentType);
+      document.status = 'reviewing';
 
       const newPath = path.join('./uploads', getCurrentPeriod(), matricula);
 
       if (!fs.existsSync(newPath)) fs.mkdirSync(newPath, { recursive: true });
 
-      fs.writeFileSync(
-        path.join(newPath, getFileName(documentType, file.originalname)),
-        file.buffer,
+      const FullPath = path.join(
+        newPath,
+        getFileName(documentType, file.originalname),
       );
+
+      document.ruta = FullPath;
+
+      fs.writeFileSync(FullPath, file.buffer);
+
+      await this.em.persistAndFlush(document);
 
       return {
         message: 'El archivo se ha subido satisfactoriamente',
@@ -122,7 +132,7 @@ export class UsersService {
         {
           matricula,
         },
-        { populate: ['documentos'] },
+        { populate: ['documentos', 'documentos.observaciones'] },
       );
 
       return {

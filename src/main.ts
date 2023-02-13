@@ -4,6 +4,7 @@ import * as session from 'express-session';
 import { AppModule } from './app.module';
 import * as Passport from 'passport';
 import * as pgSimple from 'connect-pg-simple';
+import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +21,8 @@ async function bootstrap() {
     origin: 'http://localhost:3000',
     credentials: true,
   });
+
+  app.use(morgan('dev'));
 
   const pgSession = pgSimple(session);
 
