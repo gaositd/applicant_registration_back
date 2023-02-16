@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserDTO {
   @IsOptional()
@@ -8,4 +8,22 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsString()
   mail: string;
+}
+
+export class UpdateDocumentDTO {
+  @IsOptional()
+  @IsString({ each: true })
+  observaciones: string[];
+}
+
+enum Operation {
+  'approve' = 'approve',
+  'reject' = 'reject',
+}
+
+export type OperationType = `${Operation}`;
+
+export class ParamDocumentUpdateDTO {
+  @IsEnum(Operation)
+  operation: OperationType;
 }

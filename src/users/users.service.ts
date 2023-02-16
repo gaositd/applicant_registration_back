@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { User } from 'src/models/user';
 import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
-import { UpdateUserDTO } from './dto/updateData.dto';
+import { OperationType, UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
 import { hash } from 'bcrypt';
@@ -18,6 +18,7 @@ import {
   FileTypeInterface,
   UserDocuments,
 } from 'src/models/user_documents';
+import { Documents_Observaciones } from 'src/models/documents_observaciones';
 @Injectable()
 export class UsersService {
   constructor(
@@ -189,5 +190,39 @@ export class UsersService {
     }
   }
 
-  async updateDocumentStatus(id: number, operation: string) {}
+  async updateDocumentStatus(
+    id: number,
+    operation: OperationType,
+    observaciones?: string[],
+  ) {
+    try {
+      const document = await this.em.findOneOrFail(
+        UserDocuments,
+        { id },
+        { populate: ['observaciones'] },
+      );
+
+      if (operation === 'approve') {
+        if (document.status === 'rejected') {
+          this.em.remove(document.observaciones.getItems());
+          document.observaciones.removeAll();
+        } else document.status = 'approved';
+      } else if (operation === 'reject') {
+        document.status = 'rejected';
+        document.observaciones.add(
+          observaciones.map((observacion) =>
+            this.em.create(Documents_Observaciones, { observacion }),
+          ),
+        );
+      }
+
+      await this.em.persistAndFlush(document);
+
+      return {
+        message: 'El documento ha sido actualizado con exito',
+      };
+    } catch (error) {
+      throw new BadRequestException('No se pudo actualizar el documento');
+    }
+  }
 }

@@ -21,7 +21,11 @@ import { Public } from 'src/auth/guards/public.guard';
 import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
-import { UpdateUserDTO } from './dto/updateData.dto';
+import {
+  ParamDocumentUpdateDTO,
+  UpdateDocumentDTO,
+  UpdateUserDTO,
+} from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
@@ -103,10 +107,11 @@ export class UsersController {
   @Put('/docs/:id')
   async updateUserDocs(
     @Param('id') id: number,
-    @Query('operation') operation: string,
+    @Query() { operation }: ParamDocumentUpdateDTO,
+    @Body() { observaciones }: UpdateDocumentDTO,
   ) {
     if (!id) throw new BadRequestException('No se recibio el id');
 
-    return this.usersService.updateDocumentStatus(id, operation);
+    return this.usersService.updateDocumentStatus(id, operation, observaciones);
   }
 }
