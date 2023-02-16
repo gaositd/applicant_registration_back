@@ -1,5 +1,9 @@
 import { EntityManager } from '@mikro-orm/postgresql';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 import { User } from 'src/models/user';
@@ -142,4 +146,48 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
   }
+
+  async createAdmin(userData: UserRegisterDTO) {
+    try {
+      const user = this.em.create(User, userData);
+
+      const hashedPassword = await hash(
+        userData.password,
+        parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
+      );
+
+      user.password = hashedPassword;
+
+      user.matricula = createMatricula(12);
+
+      await this.em.persistAndFlush(user);
+
+      return {
+        message: 'El usuario ha sido creado con exito',
+        user: user,
+      };
+    } catch (error) {
+      throw new BadRequestException('No se pudo crear el usuario');
+    }
+  }
+
+  async findDocsById(id: number) {
+    try {
+      const user = await this.em.findOneOrFail(
+        User,
+        {
+          id,
+        },
+        { populate: ['documentos', 'documentos.observaciones'] },
+      );
+
+      return {
+        documentos: user.documentos,
+      };
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  async updateDocumentStatus(id: number, operation: string) {}
 }

@@ -20,8 +20,10 @@ import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
 import { Public } from 'src/auth/guards/public.guard';
 import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
+import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
+import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
 
 @UseGuards(AuthenticatedGuard)
@@ -34,9 +36,15 @@ export class UsersController {
     return this.usersService.find();
   }
 
-  @Get('/docs/')
+  @Get('/docs')
   async getUserDocs(@Req() req: RequestType) {
     return this.usersService.findDocs(req.user.matricula);
+  }
+
+  @Roles('admin', 'secretaria')
+  @Get('/docs/:id')
+  async getUserDocsById(@Param('id') id: number) {
+    return this.usersService.findDocsById(id);
   }
 
   @Get('/:id')
@@ -47,7 +55,6 @@ export class UsersController {
     });
   }
 
-  @Public()
   @Post('/')
   async newUser(@Body() userData: UserRegisterDTO) {
     return this.usersService.create(userData);
@@ -81,10 +88,25 @@ export class UsersController {
     );
   }
 
+  @Post('/admin')
+  async createAdmin(@Body() userData: adminRegisterDTO) {
+    return this.usersService.createAdmin(userData);
+  }
+
   @Put('/:id')
   async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
     if (!id) throw new BadRequestException('No se recibio el id');
 
     return this.usersService.update(id, userData);
+  }
+
+  @Put('/docs/:id')
+  async updateUserDocs(
+    @Param('id') id: number,
+    @Query('operation') operation: string,
+  ) {
+    if (!id) throw new BadRequestException('No se recibio el id');
+
+    return this.usersService.updateDocumentStatus(id, operation);
   }
 }
