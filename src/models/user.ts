@@ -3,9 +3,12 @@ import {
   Entity,
   Enum,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
   Property,
   Unique,
 } from '@mikro-orm/core';
+import { ActivityHistory } from './activity_history';
 import { BaseModel } from './base';
 import { UserDocuments } from './user_documents';
 
@@ -39,4 +42,10 @@ export class User extends BaseModel {
 
   @ManyToMany({ entity: () => UserDocuments, owner: true })
   documentos = new Collection<UserDocuments>(this);
+
+  @OneToMany(
+    () => ActivityHistory,
+    (activityHistory) => activityHistory.updatedBy,
+  )
+  activityHistory: ActivityHistory;
 }

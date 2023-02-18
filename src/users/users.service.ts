@@ -19,11 +19,15 @@ import {
   UserDocuments,
 } from 'src/models/user_documents';
 import { Documents_Observaciones } from 'src/models/documents_observaciones';
+import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
+import { DOCUMENTS_OPREATIONS_MESSAGES } from 'src/contants';
+
 @Injectable()
 export class UsersService {
   constructor(
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
+    private readonly activityHistoryService: ActivityHistoryService,
   ) {}
 
   async find() {
@@ -34,7 +38,7 @@ export class UsersService {
     return this.em.fork().findOne(User, data);
   }
 
-  async create(userData: UserRegisterDTO) {
+  async create(userData: UserRegisterDTO, adminId: number) {
     const hashedPassword = await hash(
       userData.password,
       parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
@@ -70,15 +74,29 @@ export class UsersService {
 
     await this.em.persistAndFlush(newUser);
 
+    this.activityHistoryService.createActivityHistory({
+      action: 'create',
+      description: 'Se ha registrado un nuevo usuario',
+      updatedBy: adminId,
+      userAffected: newUser.id,
+    });
+
     return newUser;
   }
 
-  async update(id: number, userData: UpdateUserDTO) {
+  async update(id: number, userData: UpdateUserDTO, adminId: number) {
     const user = await this.em.fork().findOne(User, { id });
 
     const updatedUser = Object.assign(user, userData);
 
     await this.em.fork().persistAndFlush(updatedUser);
+
+    this.activityHistoryService.createActivityHistory({
+      action: 'update',
+      description: 'Se ha actualizado un usuario',
+      updatedBy: adminId,
+      userAffected: user.id,
+    });
 
     return 'El usuario ha sido registrado con exito';
   }
@@ -118,6 +136,13 @@ export class UsersService {
 
       await this.em.persistAndFlush(document);
 
+      this.activityHistoryService.createActivityHistory({
+        action: 'update',
+        description: 'Se ha subido un nuevo documento',
+        updatedBy: user.id,
+        userAffected: user.id,
+      });
+
       return {
         message: 'El archivo se ha subido satisfactoriamente',
         filename: file.filename,
@@ -148,7 +173,7 @@ export class UsersService {
     }
   }
 
-  async createAdmin(userData: UserRegisterDTO) {
+  async createAdmin(userData: UserRegisterDTO, adminId: number) {
     try {
       const user = this.em.create(User, userData);
 
@@ -162,6 +187,13 @@ export class UsersService {
       user.matricula = createMatricula(12);
 
       await this.em.persistAndFlush(user);
+
+      this.activityHistoryService.createActivityHistory({
+        action: 'create',
+        description: 'Se ha creado un nuevo administrador o secretaria',
+        updatedBy: adminId,
+        userAffected: user.id,
+      });
 
       return {
         message: 'El usuario ha sido creado con exito',
@@ -193,6 +225,7 @@ export class UsersService {
   async updateDocumentStatus(
     id: number,
     operation: OperationType,
+    adminId: number,
     observaciones?: string[],
   ) {
     try {
@@ -201,6 +234,8 @@ export class UsersService {
         { id },
         { populate: ['observaciones'] },
       );
+
+      const user = await this.em.findOneOrFail(User, { documentos: { id } });
 
       if (operation === 'approve') {
         if (document.status === 'rejected') {
@@ -217,6 +252,13 @@ export class UsersService {
       }
 
       await this.em.persistAndFlush(document);
+
+      this.activityHistoryService.createActivityHistory({
+        action: 'update',
+        description: DOCUMENTS_OPREATIONS_MESSAGES[operation],
+        updatedBy: adminId,
+        userAffected: user.id,
+      });
 
       return {
         message: 'El documento ha sido actualizado con exito',

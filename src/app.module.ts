@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ActivityHistoryModule } from './activity-history/activity-history.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
     MikroOrmModule.forRoot(),
     UsersModule,
     AuthModule,
+    ActivityHistoryModule,
   ],
   controllers: [],
   providers: [],

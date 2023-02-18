@@ -63,8 +63,8 @@ export class UsersController {
 
   @Roles('admin', 'secretaria')
   @Post('/')
-  async newUser(@Body() userData: UserRegisterDTO) {
-    return this.usersService.create(userData);
+  async newUser(@Body() userData: UserRegisterDTO, @Req() req: RequestType) {
+    return this.usersService.create(userData, req.user.id);
   }
 
   @Roles('secretaria')
@@ -98,16 +98,23 @@ export class UsersController {
 
   @Roles('admin')
   @Post('/admin')
-  async createAdmin(@Body() userData: adminRegisterDTO) {
-    return this.usersService.createAdmin(userData);
+  async createAdmin(
+    @Body() userData: adminRegisterDTO,
+    @Req() req: RequestType,
+  ) {
+    return this.usersService.createAdmin(userData, req.user.id);
   }
 
   @Roles('admin')
   @Put('/:id')
-  async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
+  async updateUser(
+    @Param('id') id: number,
+    @Body() userData: UpdateUserDTO,
+    @Req() req: RequestType,
+  ) {
     if (!id) throw new BadRequestException('No se recibio el id');
 
-    return this.usersService.update(id, userData);
+    return this.usersService.update(id, userData, req.user.id);
   }
 
   @Roles('secretaria')
@@ -116,9 +123,15 @@ export class UsersController {
     @Param('id') id: number,
     @Query() { operation }: ParamDocumentUpdateDTO,
     @Body() { observaciones }: UpdateDocumentDTO,
+    @Req() req: RequestType,
   ) {
     if (!id) throw new BadRequestException('No se recibio el id');
 
-    return this.usersService.updateDocumentStatus(id, operation, observaciones);
+    return this.usersService.updateDocumentStatus(
+      id,
+      operation,
+      req.user.id,
+      observaciones,
+    );
   }
 }
