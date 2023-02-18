@@ -17,7 +17,6 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { Public } from 'src/auth/guards/public.guard';
 import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
