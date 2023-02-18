@@ -35,11 +35,13 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Roles('admin', 'secretaria')
   @Get('/')
   async findUsers() {
     return this.usersService.find();
   }
 
+  @Roles('admin', 'secretaria')
   @Get('/docs')
   async getUserDocs(@Req() req: RequestType) {
     return this.usersService.findDocs(req.user.matricula);
@@ -51,6 +53,7 @@ export class UsersController {
     return this.usersService.findDocsById(id);
   }
 
+  @Roles('secretaria', 'admin')
   @Get('/:id')
   async findUser(@Param('id') id: string | number) {
     return this.usersService.findOne({
@@ -59,11 +62,13 @@ export class UsersController {
     });
   }
 
+  @Roles('admin', 'secretaria')
   @Post('/')
   async newUser(@Body() userData: UserRegisterDTO) {
     return this.usersService.create(userData);
   }
 
+  @Roles('secretaria')
   @UseGuards(AuthenticatedGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('documento'))
@@ -92,11 +97,13 @@ export class UsersController {
     );
   }
 
+  @Roles('admin')
   @Post('/admin')
   async createAdmin(@Body() userData: adminRegisterDTO) {
     return this.usersService.createAdmin(userData);
   }
 
+  @Roles('admin')
   @Put('/:id')
   async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
     if (!id) throw new BadRequestException('No se recibio el id');
@@ -104,6 +111,7 @@ export class UsersController {
     return this.usersService.update(id, userData);
   }
 
+  @Roles('secretaria')
   @Put('/docs/:id')
   async updateUserDocs(
     @Param('id') id: number,
