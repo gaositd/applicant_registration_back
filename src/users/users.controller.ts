@@ -17,11 +17,16 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { Public } from 'src/auth/guards/public.guard';
 import { FileType } from 'src/models/user_documents';
 import { RequestType } from 'src/types';
-import { UpdateUserDTO } from './dto/updateData.dto';
+import { adminRegisterDTO } from './dto/adminRegisterDTo';
+import {
+  ParamDocumentUpdateDTO,
+  UpdateDocumentDTO,
+  UpdateUserDTO,
+} from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
+import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
 
 @UseGuards(AuthenticatedGuard)
@@ -29,16 +34,25 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Roles('admin', 'secretaria')
   @Get('/')
   async findUsers() {
     return this.usersService.find();
   }
 
-  @Get('/docs/')
+  @Roles('admin', 'secretaria')
+  @Get('/docs')
   async getUserDocs(@Req() req: RequestType) {
     return this.usersService.findDocs(req.user.matricula);
   }
 
+  @Roles('admin', 'secretaria')
+  @Get('/docs/:id')
+  async getUserDocsById(@Param('id') id: number) {
+    return this.usersService.findDocsById(id);
+  }
+
+  @Roles('secretaria', 'admin')
   @Get('/:id')
   async findUser(@Param('id') id: string | number) {
     return this.usersService.findOne({
@@ -47,12 +61,13 @@ export class UsersController {
     });
   }
 
-  @Public()
+  @Roles('admin', 'secretaria')
   @Post('/')
-  async newUser(@Body() userData: UserRegisterDTO) {
-    return this.usersService.create(userData);
+  async newUser(@Body() userData: UserRegisterDTO, @Req() req: RequestType) {
+    return this.usersService.create(userData, req.user.id);
   }
 
+  @Roles('secretaria')
   @UseGuards(AuthenticatedGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('documento'))
@@ -81,10 +96,42 @@ export class UsersController {
     );
   }
 
+  @Roles('admin')
+  @Post('/admin')
+  async createAdmin(
+    @Body() userData: adminRegisterDTO,
+    @Req() req: RequestType,
+  ) {
+    return this.usersService.createAdmin(userData, req.user.id);
+  }
+
+  @Roles('admin')
   @Put('/:id')
-  async updateUser(@Param('id') id: number, @Body() userData: UpdateUserDTO) {
+  async updateUser(
+    @Param('id') id: number,
+    @Body() userData: UpdateUserDTO,
+    @Req() req: RequestType,
+  ) {
     if (!id) throw new BadRequestException('No se recibio el id');
 
-    return this.usersService.update(id, userData);
+    return this.usersService.update(id, userData, req.user.id);
+  }
+
+  @Roles('secretaria')
+  @Put('/docs/:id')
+  async updateUserDocs(
+    @Param('id') id: number,
+    @Query() { operation }: ParamDocumentUpdateDTO,
+    @Body() { observaciones }: UpdateDocumentDTO,
+    @Req() req: RequestType,
+  ) {
+    if (!id) throw new BadRequestException('No se recibio el id');
+
+    return this.usersService.updateDocumentStatus(
+      id,
+      operation,
+      req.user.id,
+      observaciones,
+    );
   }
 }

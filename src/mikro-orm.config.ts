@@ -7,7 +7,8 @@ require('dotenv').config();
 
 const config: Options = {
   type: 'postgresql',
-  entities: [User, UserDocuments, Documents_Observaciones, Configs],
+  entities: ['dist/models/*.js'],
+  entitiesTs: ['src/models/*.ts'],
   port: 5432,
   clientUrl: process.env.DB_CONN_STRING,
   debug: process.env.NODE_ENV !== 'production',
