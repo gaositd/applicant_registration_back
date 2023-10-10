@@ -1,6 +1,7 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { ActivityHistory, OPERATIONS_TYPE } from 'src/models/activity_history';
+import { User } from 'src/models/user';
 
 type ActivityHistoryType = {
   description?: string;
@@ -26,7 +27,17 @@ export class ActivityHistoryService {
         userAffected,
         updatedBy,
       });
-      await this.em.persistAndFlush(activityHistory);
+
+      const admin = await this.em.findOne(
+        User,
+        { id: updatedBy },
+        { populate: ['activityHistory'] },
+      );
+
+      admin.activityHistory.add(activityHistory);
+
+      await this.em.persistAndFlush(admin);
+
       return {
         ok: true,
         activityHistory,

@@ -47,5 +47,5 @@ export class User extends BaseModel {
     () => ActivityHistory,
     (activityHistory) => activityHistory.updatedBy,
   )
-  activityHistory: ActivityHistory;
+  activityHistory = new Collection<ActivityHistory>(this);
 }

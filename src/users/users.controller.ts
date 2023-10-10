@@ -54,11 +54,15 @@ export class UsersController {
 
   @Roles('secretaria', 'admin')
   @Get('/:id')
-  async findUser(@Param('id') id: string | number) {
-    return this.usersService.findOne({
-      id: typeof id === 'number' ? id : null,
-      matricula: typeof id === 'string' ? id : null,
-    });
+  async findUser(@Param('id') id: string) {
+    const searchData = {};
+
+    if (Number.isInteger(parseInt(id))) searchData['id'] = parseInt(id);
+    else searchData['matricula'] = id;
+
+    const data = await this.usersService.findOne(searchData);
+
+    return data;
   }
 
   @Roles('admin', 'secretaria')

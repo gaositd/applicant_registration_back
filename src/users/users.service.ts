@@ -35,53 +35,66 @@ export class UsersService {
   }
 
   async findOne(data: { id?: number; matricula?: string }) {
-    return this.em.fork().findOne(User, data);
+    const user = await this.em
+      .fork()
+      .findOne(User, data, { populate: ['activityHistory'] });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
   }
 
   async create(userData: UserRegisterDTO, adminId: number) {
-    const hashedPassword = await hash(
-      userData.password,
-      parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
-    );
-
-    const newUser = this.em
-      .fork()
-      .create(User, { ...userData, password: hashedPassword });
-
-    newUser.matricula = createMatricula(12);
-
-    const documentsRawFile = fs.readFileSync(
-      path.resolve(__dirname, './../../config/documents.json'),
-      'utf-8',
-    );
-
-    type documentFileType = {
-      document: string;
-      fileType: string[];
-    };
-
-    const documents: documentFileType[] = JSON.parse(documentsRawFile);
-
-    documents.forEach((document) => {
-      console.log(FileType[document.document]);
-
-      newUser.documentos.add(
-        this.em.create(UserDocuments, {
-          fileType: FileType[document.document],
-        }),
+    try {
+      const hashedPassword = await hash(
+        userData.password,
+        parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
       );
-    });
 
-    await this.em.persistAndFlush(newUser);
+      const newUser = this.em
+        .fork()
+        .create(User, { ...userData, password: hashedPassword });
 
-    this.activityHistoryService.createActivityHistory({
-      action: 'create',
-      description: 'Se ha registrado un nuevo usuario',
-      updatedBy: adminId,
-      userAffected: newUser.id,
-    });
+      newUser.matricula = createMatricula(12);
 
-    return newUser;
+      const documentsRawFile = fs.readFileSync(
+        path.resolve(__dirname, './../../config/documents.json'),
+        'utf-8',
+      );
+
+      type documentFileType = {
+        document: string;
+        fileType: string[];
+      };
+
+      const documents: documentFileType[] = JSON.parse(documentsRawFile);
+
+      documents.forEach((document) => {
+        console.log(FileType[document.document]);
+
+        newUser.documentos.add(
+          this.em.create(UserDocuments, {
+            fileType: FileType[document.document],
+          }),
+        );
+      });
+
+      await this.em.persistAndFlush(newUser);
+
+      const response = await this.activityHistoryService.createActivityHistory({
+        action: 'create',
+        description: 'Se ha registrado un nuevo usuario',
+        updatedBy: adminId,
+        userAffected: newUser.id,
+      });
+
+      if (!response.ok) throw new Error(response.error);
+
+      return newUser;
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('No se pudo crear el usuario');
+    }
   }
 
   async update(id: number, userData: UpdateUserDTO, adminId: number) {
