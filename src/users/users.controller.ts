@@ -40,7 +40,7 @@ export class UsersController {
     return this.usersService.find();
   }
 
-  @Roles('admin', 'secretaria')
+  @Roles('admin', 'secretaria', 'prospecto')
   @Get('/docs')
   async getUserDocs(@Req() req: RequestType) {
     return this.usersService.findDocs(req.user.matricula);
@@ -71,7 +71,7 @@ export class UsersController {
     return this.usersService.create(userData, req.user.id);
   }
 
-  @Roles('secretaria')
+  @Roles('secretaria', 'prospecto')
   @UseGuards(AuthenticatedGuard)
   @Post('/upload')
   @UseInterceptors(FileInterceptor('documento'))
