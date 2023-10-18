@@ -3,7 +3,7 @@ import { Seeder } from '@mikro-orm/seeder';
 import { User } from '../models/user';
 import { hash } from 'bcrypt';
 
-export class AdminSeeder extends Seeder {
+export class DevelopmentSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     const hashedPassword = await hash(
       'admin',
@@ -30,7 +30,7 @@ export class AdminSeeder extends Seeder {
       mail: 'secretaria@secretaria.com',
       password: hashedPasswordSecretaria,
       role: 'secretaria',
-      matricula: "YgvInAxNrBDg",
+      matricula: 'YgvInAxNrBDg',
     });
 
     const hasshedPasswordUser = await hash(
@@ -38,17 +38,13 @@ export class AdminSeeder extends Seeder {
       parseInt(process.env.HASH_SALT_ROUNDS),
     );
 
-
     const usuario = em.create(User, {
       nombre: 'User Jonathan',
       mail: 'user@user.com',
       password: hasshedPasswordUser,
       role: 'prospecto',
-      matricula: "FMN4ziiIZtIl",
+      matricula: 'FMN4ziiIZtIl',
     });
-    
-
-
 
     await em.persistAndFlush([admin, secretaria, usuario]);
   }

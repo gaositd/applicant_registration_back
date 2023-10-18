@@ -34,10 +34,16 @@ export class UsersService {
     return this.em.find(User, {});
   }
 
-  async findOne(data: { id?: number; matricula?: string }) {
-    const user = await this.em
-      .fork()
-      .findOne(User, data, { populate: ['activityHistory'] });
+  async findOne(
+    data: {
+      id?: number;
+      matricula?: string;
+    },
+    populateData?: boolean,
+  ) {
+    const user = await this.em.fork().findOne(User, data, {
+      populate: populateData ? ['activityHistory'] : false,
+    });
 
     if (!user) throw new NotFoundException('User not found');
 
