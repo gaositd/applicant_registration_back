@@ -260,6 +260,7 @@ export class UsersService {
         if (document.status === 'rejected') {
           this.em.remove(document.observaciones.getItems());
           document.observaciones.removeAll();
+          document.status = 'approved';
         } else document.status = 'approved';
       } else if (operation === 'reject') {
         document.status = 'rejected';
