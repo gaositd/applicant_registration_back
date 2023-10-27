@@ -17,8 +17,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { USER_STATUS_TYPE } from 'src/models/user';
 import { FileType } from 'src/models/user_documents';
-import { RequestType } from 'src/types';
+import { QueryUserType, RequestType } from 'src/types';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import {
   ParamDocumentUpdateDTO,
@@ -40,7 +41,15 @@ export class UsersController {
     return this.usersService.find();
   }
 
-  @Roles('admin', 'secretaria', 'prospecto')
+  @Roles('admin', 'secretaria')
+  @Get('/prospectos')
+  async findProspectos(@Query('status') status: QueryUserType = 'all') {
+    return this.usersService.findProspectos(
+      status === 'all' ? undefined : status,
+    );
+  }
+
+  @Roles('prospecto')
   @Get('/docs')
   async getUserDocs(@Req() req: RequestType) {
     return this.usersService.findDocs(req.user.matricula);

@@ -19,6 +19,14 @@ enum USER_ROLES {
 }
 
 export type USER_ROLES_TYPE = `${USER_ROLES}`;
+
+enum USER_STATUS {
+  COMPLETED = 'completed',
+  PENDING = 'pending',
+  DUEUED = 'dueued',
+}
+
+export type USER_STATUS_TYPE = `${USER_STATUS}`;
 @Entity()
 export class User extends BaseModel {
   @Property()
@@ -37,11 +45,18 @@ export class User extends BaseModel {
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
 
-  @Enum({ items: () => USER_ROLES, default: USER_ROLES.PROSPECTO })
+  @Enum({
+    items: () => USER_ROLES,
+    default: USER_ROLES.PROSPECTO,
+    defaultRaw: `'${USER_ROLES.PROSPECTO}'`,
+  })
   role: USER_ROLES_TYPE;
 
   @ManyToMany({ entity: () => UserDocuments, owner: true })
   documentos = new Collection<UserDocuments>(this);
+
+  @Enum({ items: () => USER_STATUS, default: USER_STATUS.PENDING })
+  status: USER_STATUS_TYPE = USER_STATUS.PENDING;
 
   @OneToMany(
     () => ActivityHistory,

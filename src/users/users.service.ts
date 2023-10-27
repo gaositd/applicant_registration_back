@@ -1,12 +1,13 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import {
+  BadGatewayException,
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-import { User } from 'src/models/user';
+import { User, USER_STATUS_TYPE } from 'src/models/user';
 import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
 import { OperationType, UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
@@ -285,6 +286,22 @@ export class UsersService {
       };
     } catch (error) {
       throw new BadRequestException('No se pudo actualizar el documento');
+    }
+  }
+
+  async findProspectos(status?: USER_STATUS_TYPE) {
+    const statusOptions = status ? { status } : {};
+
+    try {
+      const prospectos = await this.em.find(User, {
+        role: 'prospecto',
+        ...statusOptions,
+      });
+
+      return prospectos;
+    } catch (error) {
+      console.error(error);
+      throw new BadGatewayException('No se pudo obtener los prospectos');
     }
   }
 }
