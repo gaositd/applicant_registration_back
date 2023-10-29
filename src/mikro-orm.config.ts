@@ -1,8 +1,4 @@
 import { Options } from '@mikro-orm/postgresql';
-import { Configs } from './models/configs';
-import { Documents_Observaciones } from './models/documents_observaciones';
-import { User } from './models/user';
-import { UserDocuments } from './models/user_documents';
 require('dotenv').config();
 
 const config: Options = {
@@ -16,6 +12,14 @@ const config: Options = {
     path: './src/migrations',
     transactional: true,
     emit: 'ts',
+    fileName: (timestamp: string, name?: string) => {
+      // force user to provide the name, otherwise we would end up with `Migration20230421212713_undefined`
+      if (!name) {
+        throw new Error('Specify migration name via `mikro-orm migration:create --name=...`');
+      }
+  
+      return `Migration${timestamp}_${name}`;
+    },
   },
   seeder: {
     path: './dist/seeders', // path to the folder with seeders

@@ -33,6 +33,9 @@ export class UserDocuments extends BaseModel {
   @Property({ nullable: true })
   ruta?: string;
 
+  @Property({ nullable: true })
+  mimeType?: string;
+
   @Enum({ items: () => FileStatus, default: FileStatus.OPENTOUPLUAD })
   status: FileStatusType;
 

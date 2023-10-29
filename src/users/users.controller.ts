@@ -49,18 +49,9 @@ export class UsersController {
     );
   }
 
-  @Roles('prospecto')
-  @Get('/docs')
-  async getUserDocs(@Req() req: RequestType) {
-    return this.usersService.findDocs(req.user.matricula);
-  }
 
-  @Roles('admin', 'secretaria')
-  @Get('/docs/:id')
-  async getUserDocsById(@Param('id') id: number | string) {
 
-    return this.usersService.findDocsById(id);
-  }
+  
 
   @Roles('secretaria', 'admin')
   @Get('/:id')
@@ -81,35 +72,7 @@ export class UsersController {
     return this.usersService.create(userData, req.user.id);
   }
 
-  @Roles('secretaria', 'prospecto')
-  @UseGuards(AuthenticatedGuard)
-  @Post('/upload')
-  @UseInterceptors(FileInterceptor('documento'))
-  async uploadFile(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.(png|jpg|pdf|jpeg)' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
-    @Query('fileType') document: string,
-    @Req() req: RequestType,
-  ) {
-    if (!file)
-      return {
-        message: 'Archivo no valido',
-      };
-
-    return await this.usersService.uploadDocument(
-      file,
-      FileType[document],
-      req.user.matricula,
-    );
-  }
-
+  
   @Roles('admin')
   @Post('/admin')
   async createAdmin(
@@ -131,21 +94,4 @@ export class UsersController {
     return this.usersService.update(id, userData, req.user.id);
   }
 
-  @Roles('secretaria')
-  @Put('/docs/:id')
-  async updateUserDocs(
-    @Param('id') id: number,
-    @Query() { operation }: ParamDocumentUpdateDTO,
-    @Body() { observaciones }: UpdateDocumentDTO,
-    @Req() req: RequestType,
-  ) {
-    if (!id) throw new BadRequestException('No se recibio el id');
-
-    return this.usersService.updateDocumentStatus(
-      id,
-      operation,
-      req.user.id,
-      observaciones,
-    );
-  }
 }
