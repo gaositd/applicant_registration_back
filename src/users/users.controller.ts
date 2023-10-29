@@ -57,7 +57,8 @@ export class UsersController {
 
   @Roles('admin', 'secretaria')
   @Get('/docs/:id')
-  async getUserDocsById(@Param('id') id: number) {
+  async getUserDocsById(@Param('id') id: number | string) {
+
     return this.usersService.findDocsById(id);
   }
 

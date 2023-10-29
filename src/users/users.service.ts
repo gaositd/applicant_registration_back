@@ -224,17 +224,20 @@ export class UsersService {
     }
   }
 
-  async findDocsById(id: number) {
+  async findDocsById(id: number | string) {
+
+    const options = typeof id === 'number' ? { id } : { matricula: id };
+
     try {
       const user = await this.em.findOneOrFail(
         User,
-        {
-          id,
-        },
+        options,
         { populate: ['documentos', 'documentos.observaciones'] },
       );
 
       return {
+        name: user.nombre,
+
         documentos: user.documentos,
       };
     } catch (error) {
