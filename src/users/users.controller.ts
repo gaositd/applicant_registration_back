@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   MaxFileSizeValidator,
@@ -94,4 +95,17 @@ export class UsersController {
     return this.usersService.update(id, userData, req.user.id);
   }
 
-}
+  @Roles('admin','secretaria')
+    @Delete('/:id')
+    async deleteUser(@Param('id') id: number | string, @Req() req: RequestType) {
+      if (!id) throw new BadRequestException('No se recibio el id');
+
+      if (req.user.id === id)
+        throw new BadRequestException('No puedes eliminarte a ti mismo');
+
+        
+  
+      return this.usersService.deleteUser(id, req.user.id, req.user.role);
+    }
+
+  }

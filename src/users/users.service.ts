@@ -2,7 +2,9 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import {
   BadGatewayException,
   BadRequestException,
+  ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
@@ -11,10 +13,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
 import { USER_STATUS_TYPE, User } from 'src/models/user';
-import {
-  FileType,
-  UserDocuments
-} from 'src/models/user_documents';
+import { FileType, UserDocuments } from 'src/models/user_documents';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula } from './utils';
@@ -117,10 +116,6 @@ export class UsersService {
     return 'El usuario ha sido registrado con exito';
   }
 
- 
-
-
-
   async createAdmin(userData: UserRegisterDTO, adminId: number) {
     try {
       const user = this.em.create(User, userData);
@@ -152,7 +147,6 @@ export class UsersService {
     }
   }
 
-
   async findProspectos(status?: USER_STATUS_TYPE) {
     const statusOptions = status ? { status } : {};
 
@@ -166,6 +160,35 @@ export class UsersService {
     } catch (error) {
       console.error(error);
       throw new BadGatewayException('No se pudo obtener los prospectos');
+    }
+  }
+
+  async deleteUser(id: number | string, adminId: number, adminRole: string) {
+    try {
+      const options = typeof id === 'number' ? { id } : { matricula: id };
+
+      const user = await this.em.fork().findOne(User, options);
+
+      if (adminRole !== 'admin' && user.role === 'admin')
+        throw new ForbiddenException(
+          'No tienes permisos para eliminar a este usuario',
+        );
+
+      user.isDeleted = true;
+
+      await this.em.persistAndFlush(user);
+
+      this.activityHistoryService.createActivityHistory({
+        action: 'delete',
+        description: 'Se ha eliminado un usuario',
+        updatedBy: adminId,
+        userAffected: user.id,
+      });
+
+      return 'El usuario ha sido eliminado con exito';
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException('No se pudo eliminar el usuario');
     }
   }
 }
