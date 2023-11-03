@@ -1,5 +1,9 @@
 import { EntityManager } from '@mikro-orm/core';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from '../models/user';
 import { DOCUMENTS_OPREATIONS_MESSAGES } from '../contants';
 import { Documents_Observaciones } from '../models/documents_observaciones';
@@ -12,39 +16,36 @@ import * as fs from 'fs';
 
 @Injectable()
 export class DocumentsService {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly activityHistoryService: ActivityHistoryService,
+  ) {}
 
-    constructor(private readonly em: EntityManager, private readonly activityHistoryService: ActivityHistoryService) {}
-    
-    
-    async findDocs(matricula: string) {
-        try {
-          const user = await this.em.findOneOrFail(
-            User,
-            {
-              matricula,
-            },
-            { populate: ['documentos', 'documentos.observaciones'] },
-          );
-    
-          return {
-            documentos: user.documentos,
-          };
-        } catch (error) {
-          throw new NotFoundException('User not found');
-        }
-      }
-
-      
-  async findDocsById(id: number | string) {
-
-    const options = typeof id === 'number' ? { id } : { matricula: id };
-
+  async findDocs(matricula: string) {
     try {
       const user = await this.em.findOneOrFail(
         User,
-        options,
+        {
+          matricula,
+        },
         { populate: ['documentos', 'documentos.observaciones'] },
       );
+
+      return {
+        documentos: user.documentos,
+      };
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
+  }
+
+  async findDocsById(id: number | string) {
+    const options = typeof id === 'number' ? { id } : { matricula: id };
+
+    try {
+      const user = await this.em.findOneOrFail(User, options, {
+        populate: ['documentos', 'documentos.observaciones'],
+      });
 
       return {
         name: user.nombre,
@@ -56,7 +57,6 @@ export class DocumentsService {
     }
   }
 
-  
   async updateDocumentStatus(
     id: number,
     operation: OperationType,
@@ -104,7 +104,6 @@ export class DocumentsService {
     }
   }
 
-
   async uploadDocument(
     file: Express.Multer.File,
     documentType: FileTypeInterface,
@@ -118,6 +117,9 @@ export class DocumentsService {
         },
         { populate: ['documentos'] },
       );
+
+      if (!user.documentos.length)
+        throw new BadRequestException('No se encontraron documentos');
 
       const document = user.documentos
         .getItems()
@@ -161,9 +163,7 @@ export class DocumentsService {
     }
   }
 
-
-  async findDocsFile(id:number){
-
+  async findDocsFile(id: number) {
     try {
       const document = await this.em.findOneOrFail(UserDocuments, { id });
 
@@ -173,11 +173,9 @@ export class DocumentsService {
         file,
         name: getFileName(document.fileType, document.ruta),
         mimeType: document.mimeType,
-      }
+      };
     } catch (error) {
       throw new NotFoundException('Documento no encontrado');
     }
-
   }
-
 }

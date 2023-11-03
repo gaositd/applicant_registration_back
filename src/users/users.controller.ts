@@ -3,35 +3,26 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
-  MaxFileSizeValidator,
   Param,
-  ParseFilePipe,
   Post,
   Put,
   Query,
   Req,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { USER_STATUS_TYPE } from 'src/models/user';
-import { FileType } from 'src/models/user_documents';
 import { QueryUserType, RequestType } from 'src/types';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
-import {
-  ParamDocumentUpdateDTO,
-  UpdateDocumentDTO,
-  UpdateUserDTO,
-} from './dto/updateData.dto';
+import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
+import { ExcludeDeletedusers } from './interceptors/filterDeleteUser.interceptor';
 
 @UseGuards(AuthenticatedGuard)
+@UseInterceptors(ExcludeDeletedusers)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -50,10 +41,6 @@ export class UsersController {
     );
   }
 
-
-
-  
-
   @Roles('secretaria', 'admin')
   @Get('/:id')
   async findUser(@Param('id') id: string) {
@@ -64,7 +51,9 @@ export class UsersController {
 
     const data = await this.usersService.findOne(searchData);
 
-    return data;
+    const { password, ...parsedUser } = data;
+
+    return parsedUser;
   }
 
   @Roles('admin', 'secretaria')
@@ -73,7 +62,6 @@ export class UsersController {
     return this.usersService.create(userData, req.user.id);
   }
 
-  
   @Roles('admin')
   @Post('/admin')
   async createAdmin(
@@ -95,17 +83,14 @@ export class UsersController {
     return this.usersService.update(id, userData, req.user.id);
   }
 
-  @Roles('admin','secretaria')
-    @Delete('/:id')
-    async deleteUser(@Param('id') id: number | string, @Req() req: RequestType) {
-      if (!id) throw new BadRequestException('No se recibio el id');
+  @Roles('admin', 'secretaria')
+  @Delete('/:id')
+  async deleteUser(@Param('id') id: number | string, @Req() req: RequestType) {
+    if (!id) throw new BadRequestException('No se recibio el id');
 
-      if (req.user.id === id)
-        throw new BadRequestException('No puedes eliminarte a ti mismo');
+    if (req.user.id === id)
+      throw new BadRequestException('No puedes eliminarte a ti mismo');
 
-        
-  
-      return this.usersService.deleteUser(id, req.user.id, req.user.role);
-    }
-
+    return this.usersService.deleteUser(id, req.user.id, req.user.role);
   }
+}

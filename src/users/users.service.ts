@@ -185,7 +185,9 @@ export class UsersService {
         userAffected: user.id,
       });
 
-      return 'El usuario ha sido eliminado con exito';
+      return {
+        message: 'El usuario ha sido eliminado con exito',
+      };
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('No se pudo eliminar el usuario');
