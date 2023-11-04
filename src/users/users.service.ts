@@ -15,8 +15,9 @@ import { ActivityHistoryService } from 'src/activity-history/activity-history.se
 import { USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
 import { UpdateUserDTO } from './dto/updateData.dto';
-import { UserRegisterDTO } from './dto/userRegister.dto';
-import { createMatricula } from './utils';
+import {  UserRegisterDTO } from './dto/userRegister.dto';
+import { createMatricula, generatePassword } from './utils';
+import { adminRegisterDTO } from './dto/adminRegisterDTo';
 
 @Injectable()
 export class UsersService {
@@ -48,8 +49,11 @@ export class UsersService {
 
   async create(userData: UserRegisterDTO, adminId: number) {
     try {
+
+      const password = generatePassword(10);
+
       const hashedPassword = await hash(
-        userData.password,
+        password,
         parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
       );
 
@@ -58,6 +62,8 @@ export class UsersService {
         .create(User, { ...userData, password: hashedPassword });
 
       newUser.matricula = createMatricula(12);
+
+
 
       const documentsRawFile = fs.readFileSync(
         path.resolve(__dirname, './../../config/documents.json'),
@@ -92,7 +98,10 @@ export class UsersService {
 
       if (!response.ok) throw new Error(response.error);
 
-      return newUser;
+      return {
+        ...newUser,
+        password
+      };
     } catch (error) {
       console.error(error);
       throw new BadRequestException('No se pudo crear el usuario');
@@ -116,7 +125,7 @@ export class UsersService {
     return 'El usuario ha sido registrado con exito';
   }
 
-  async createAdmin(userData: UserRegisterDTO, adminId: number) {
+  async createAdmin(userData: adminRegisterDTO, adminId: number) {
     try {
       const user = this.em.create(User, userData);
 

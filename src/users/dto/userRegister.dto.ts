@@ -7,7 +7,6 @@ export class UserRegisterDTO {
   @IsString()
   mail: string;
 
-  @IsString()
-  @MinLength(8)
-  password: string;
+  
 }
+
