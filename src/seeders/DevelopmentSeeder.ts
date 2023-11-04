@@ -33,19 +33,6 @@ export class DevelopmentSeeder extends Seeder {
       matricula: 'YgvInAxNrBDg',
     });
 
-    const hasshedPasswordUser = await hash(
-      'user',
-      parseInt(process.env.HASH_SALT_ROUNDS),
-    );
-
-    const usuario = em.create(User, {
-      nombre: 'User Jonathan',
-      mail: 'user@user.com',
-      password: hasshedPasswordUser,
-      role: 'prospecto',
-      matricula: 'FMN4ziiIZtIl',
-    });
-
-    await em.persistAndFlush([admin, secretaria, usuario]);
+    await em.persistAndFlush([admin, secretaria]);
   }
 }

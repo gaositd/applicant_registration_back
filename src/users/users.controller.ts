@@ -77,10 +77,10 @@ export class UsersController {
     return this.usersService.createAdmin(userData, req.user.id);
   }
 
-  @Roles('admin')
+  @Roles('admin', 'secretaria')
   @Put('/:id')
   async updateUser(
-    @Param('id') id: number,
+    @Param('id') id: number | string,
     @Body() userData: UpdateUserDTO,
     @Req() req: RequestType,
   ) {

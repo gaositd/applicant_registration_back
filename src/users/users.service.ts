@@ -105,8 +105,10 @@ export class UsersService {
     }
   }
 
-  async update(id: number, userData: UpdateUserDTO, adminId: number) {
-    const user = await this.em.fork().findOne(User, { id });
+  async update(id: number | string, userData: UpdateUserDTO, adminId: number) {
+    const options = typeof id === 'number' ? { id } : { matricula: id };
+
+    const user = await this.em.fork().findOne(User, options);
 
     const updatedUser = Object.assign(user, userData);
 
