@@ -15,7 +15,7 @@ import { ActivityHistoryService } from 'src/activity-history/activity-history.se
 import { USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
 import { UpdateUserDTO } from './dto/updateData.dto';
-import {  UserRegisterDTO } from './dto/userRegister.dto';
+import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula, generatePassword } from './utils';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 
@@ -49,7 +49,6 @@ export class UsersService {
 
   async create(userData: UserRegisterDTO, adminId: number) {
     try {
-
       const password = generatePassword(10);
 
       const hashedPassword = await hash(
@@ -62,8 +61,6 @@ export class UsersService {
         .create(User, { ...userData, password: hashedPassword });
 
       newUser.matricula = createMatricula(12);
-
-
 
       const documentsRawFile = fs.readFileSync(
         path.resolve(__dirname, './../../config/documents.json'),
@@ -100,7 +97,7 @@ export class UsersService {
 
       return {
         ...newUser,
-        password
+        password,
       };
     } catch (error) {
       console.error(error);
@@ -156,12 +153,25 @@ export class UsersService {
     }
   }
 
-  async findProspectos(status?: USER_STATUS_TYPE) {
+  async findProspectos(
+    status?: USER_STATUS_TYPE,
+    search?: string,
+    page?: number,
+  ) {
     const statusOptions = status ? { status } : {};
+    const searchOptions = search
+      ? {
+          $or: [
+            { matricula: { $ilike: `%${search}%` } },
+            { nombre: { $ilike: `%${search}%` } },
+          ],
+        }
+      : {};
 
     try {
       const prospectos = await this.em.find(User, {
         role: 'prospecto',
+        ...searchOptions,
         ...statusOptions,
       });
 

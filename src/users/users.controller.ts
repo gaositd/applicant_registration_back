@@ -35,9 +35,15 @@ export class UsersController {
 
   @Roles('admin', 'secretaria')
   @Get('/prospectos')
-  async findProspectos(@Query('status') status: QueryUserType = 'all') {
+  async findProspectos(
+    @Query('status') status: QueryUserType = 'all',
+    @Query('search') search: string,
+    @Query('page') page: number,
+  ) {
     return this.usersService.findProspectos(
       status === 'all' ? undefined : status,
+      search,
+      page,
     );
   }
 
