@@ -22,7 +22,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "'NOW()'",
           "mappedType": "datetime"
         },
@@ -33,7 +33,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "mappedType": "datetime"
         },
         "config_type": {
@@ -112,7 +112,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "'NOW()'",
           "mappedType": "datetime"
         },
@@ -123,7 +123,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "mappedType": "datetime"
         },
         "observacion": {
@@ -170,7 +170,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "'NOW()'",
           "mappedType": "datetime"
         },
@@ -181,7 +181,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "mappedType": "datetime"
         },
         "nombre": {
@@ -244,6 +244,21 @@
             "prospecto"
           ],
           "mappedType": "enum"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'pending'",
+          "enumItems": [
+            "completed",
+            "pending",
+            "dueued"
+          ],
+          "mappedType": "enum"
         }
       },
       "name": "user",
@@ -289,7 +304,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "'NOW()'",
           "mappedType": "datetime"
         },
@@ -300,7 +315,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "mappedType": "datetime"
         },
         "description": {
@@ -404,7 +419,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "default": "'NOW()'",
           "mappedType": "datetime"
         },
@@ -415,7 +430,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 6,
+          "length": 0,
           "mappedType": "datetime"
         },
         "file_type": {
@@ -434,6 +449,15 @@
         },
         "ruta": {
           "name": "ruta",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "mime_type": {
+          "name": "mime_type",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,

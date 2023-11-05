@@ -4,6 +4,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ActivityHistoryModule } from './activity-history/activity-history.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ActivityHistoryModule } from './activity-history/activity-history.modul
     UsersModule,
     AuthModule,
     ActivityHistoryModule,
+    DocumentsModule,
   ],
   controllers: [],
   providers: [],

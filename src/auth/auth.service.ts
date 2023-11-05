@@ -22,7 +22,7 @@ export class AuthService {
     matricula: string,
     password: string,
   ): Promise<userData | null> {
-    const user = await this.userService.findOne({ matricula });
+    const user = await this.userService.findOne({ matricula }, false);
 
     if (!user) return null;
 

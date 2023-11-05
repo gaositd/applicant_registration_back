@@ -1,4 +1,5 @@
 import { IsEnum, IsString, MinLength } from 'class-validator';
+import { USER_ROLES_TYPE } from 'src/models/user';
 
 export class adminRegisterDTO {
   @IsString()
@@ -12,5 +13,5 @@ export class adminRegisterDTO {
   password: string;
 
   @IsEnum(['admin', 'secretaria'])
-  role: string;
+  role: USER_ROLES_TYPE;
 }

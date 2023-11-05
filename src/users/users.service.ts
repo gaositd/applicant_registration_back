@@ -1,26 +1,23 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import {
+  BadGatewayException,
   BadRequestException,
+  ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config/dist/config.service';
+import { hash } from 'bcrypt';
 import * as fs from 'fs';
 import * as path from 'path';
-import { User } from 'src/models/user';
-import { getCurrentPeriod, getFileName } from 'src/utils/users.utils';
-import { OperationType, UpdateUserDTO } from './dto/updateData.dto';
-import { UserRegisterDTO } from './dto/userRegister.dto';
-import { createMatricula } from './utils';
-import { hash } from 'bcrypt';
-import { ConfigService } from '@nestjs/config/dist/config.service';
-import {
-  FileType,
-  FileTypeInterface,
-  UserDocuments,
-} from 'src/models/user_documents';
-import { Documents_Observaciones } from 'src/models/documents_observaciones';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
-import { DOCUMENTS_OPREATIONS_MESSAGES } from 'src/contants';
+import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
+import { FileType, UserDocuments } from 'src/models/user_documents';
+import { UpdateUserDTO } from './dto/updateData.dto';
+import { UserRegisterDTO } from './dto/userRegister.dto';
+import { createMatricula, generatePassword } from './utils';
+import { adminRegisterDTO } from './dto/adminRegisterDTo';
 
 @Injectable()
 export class UsersService {
@@ -30,62 +27,111 @@ export class UsersService {
     private readonly activityHistoryService: ActivityHistoryService,
   ) {}
 
-  async find() {
-    return this.em.find(User, {});
+  async find(
+    status?: USER_STATUS_TYPE,
+    search?: string,
+    page?: number,
+    USER_ROLE?: USER_ROLES_TYPE | USER_ROLES_TYPE[],
+  ) {
+    const statusOptions = status ? { status } : {};
+    const searchOptions = search
+      ? {
+          $or: [
+            { matricula: { $ilike: `%${search}%` } },
+            { nombre: { $ilike: `%${search}%` } },
+          ],
+        }
+      : {};
+    const pageOptions = page ? { limit: 10, offset: page * 10 } : {};
+    const roleOptions = USER_ROLE
+      ? { role: Array.isArray(USER_ROLE) ? { $in: USER_ROLE } : USER_ROLE }
+      : {};
+    return this.em.find(User, {
+      ...pageOptions,
+      ...searchOptions,
+      ...statusOptions,
+      ...roleOptions,
+    });
   }
 
-  async findOne(data: { id?: number; matricula?: string }) {
-    return this.em.fork().findOne(User, data);
+  async findOne(
+    data: {
+      id?: number;
+      matricula?: string;
+    },
+    populateData?: boolean,
+  ) {
+    const user = await this.em.fork().findOne(User, data, {
+      populate: populateData ? ['activityHistory'] : false,
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
   }
 
   async create(userData: UserRegisterDTO, adminId: number) {
-    const hashedPassword = await hash(
-      userData.password,
-      parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
-    );
+    try {
+      const password = generatePassword(10);
 
-    const newUser = this.em
-      .fork()
-      .create(User, { ...userData, password: hashedPassword });
-
-    newUser.matricula = createMatricula(12);
-
-    const documentsRawFile = fs.readFileSync(
-      path.resolve(__dirname, './../../config/documents.json'),
-      'utf-8',
-    );
-
-    type documentFileType = {
-      document: string;
-      fileType: string[];
-    };
-
-    const documents: documentFileType[] = JSON.parse(documentsRawFile);
-
-    documents.forEach((document) => {
-      console.log(FileType[document.document]);
-
-      newUser.documentos.add(
-        this.em.create(UserDocuments, {
-          fileType: FileType[document.document],
-        }),
+      const hashedPassword = await hash(
+        password,
+        parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
       );
-    });
 
-    await this.em.persistAndFlush(newUser);
+      const newUser = this.em
+        .fork()
+        .create(User, { ...userData, password: hashedPassword });
 
-    this.activityHistoryService.createActivityHistory({
-      action: 'create',
-      description: 'Se ha registrado un nuevo usuario',
-      updatedBy: adminId,
-      userAffected: newUser.id,
-    });
+      newUser.matricula = createMatricula(12);
 
-    return newUser;
+      const documentsRawFile = fs.readFileSync(
+        path.resolve(__dirname, './../../config/documents.json'),
+        'utf-8',
+      );
+
+      type documentFileType = {
+        document: string;
+        fileType: string[];
+      };
+
+      const documents: documentFileType[] = JSON.parse(documentsRawFile);
+
+      documents.forEach((document) => {
+        console.log(FileType[document.document]);
+
+        newUser.documentos.add(
+          this.em.create(UserDocuments, {
+            fileType: FileType[document.document],
+          }),
+        );
+      });
+
+      await this.em.persistAndFlush(newUser);
+
+      const response = await this.activityHistoryService.createActivityHistory({
+        action: 'create',
+        description: 'Se ha registrado un nuevo usuario',
+        updatedBy: adminId,
+        userAffected: newUser.id,
+      });
+
+      if (!response.ok) throw new Error(response.error);
+
+      return {
+        ...newUser,
+        password,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('No se pudo crear el usuario');
+    }
   }
 
-  async update(id: number, userData: UpdateUserDTO, adminId: number) {
-    const user = await this.em.fork().findOne(User, { id });
+  async update(id: number | string, userData: UpdateUserDTO, adminId: number) {
+    const options = typeof id === 'number' ? { id } : { matricula: id };
+
+    const user = await this.em.fork().findOne(User, options);
 
     const updatedUser = Object.assign(user, userData);
 
@@ -101,79 +147,7 @@ export class UsersService {
     return 'El usuario ha sido registrado con exito';
   }
 
-  async uploadDocument(
-    file: Express.Multer.File,
-    documentType: FileTypeInterface,
-    matricula: string,
-  ) {
-    try {
-      const user = await this.em.findOneOrFail(
-        User,
-        {
-          matricula,
-        },
-        { populate: ['documentos'] },
-      );
-
-      const document = user.documentos
-        .getItems()
-        .find((document) => document.fileType === documentType);
-
-      document.status = 'reviewing';
-
-      const newPath = path.join('./uploads', getCurrentPeriod(), matricula);
-
-      if (!fs.existsSync(newPath)) fs.mkdirSync(newPath, { recursive: true });
-
-      const FullPath = path.join(
-        newPath,
-        getFileName(documentType, file.originalname),
-      );
-
-      document.ruta = FullPath;
-
-      fs.writeFileSync(FullPath, file.buffer);
-
-      await this.em.persistAndFlush(document);
-
-      this.activityHistoryService.createActivityHistory({
-        action: 'update',
-        description: 'Se ha subido un nuevo documento',
-        updatedBy: user.id,
-        userAffected: user.id,
-      });
-
-      return {
-        message: 'El archivo se ha subido satisfactoriamente',
-        filename: file.filename,
-      };
-    } catch (error) {
-      console.error(error);
-      return {
-        message: error.message,
-      };
-    }
-  }
-
-  async findDocs(matricula: string) {
-    try {
-      const user = await this.em.findOneOrFail(
-        User,
-        {
-          matricula,
-        },
-        { populate: ['documentos', 'documentos.observaciones'] },
-      );
-
-      return {
-        documentos: user.documentos,
-      };
-    } catch (error) {
-      throw new NotFoundException('User not found');
-    }
-  }
-
-  async createAdmin(userData: UserRegisterDTO, adminId: number) {
+  async createAdmin(userData: adminRegisterDTO, adminId: number) {
     try {
       const user = this.em.create(User, userData);
 
@@ -204,67 +178,34 @@ export class UsersService {
     }
   }
 
-  async findDocsById(id: number) {
+  async deleteUser(id: number | string, adminId: number, adminRole: string) {
     try {
-      const user = await this.em.findOneOrFail(
-        User,
-        {
-          id,
-        },
-        { populate: ['documentos', 'documentos.observaciones'] },
-      );
+      const options = typeof id === 'number' ? { id } : { matricula: id };
 
-      return {
-        documentos: user.documentos,
-      };
-    } catch (error) {
-      throw new NotFoundException('User not found');
-    }
-  }
+      const user = await this.em.fork().findOne(User, options);
 
-  async updateDocumentStatus(
-    id: number,
-    operation: OperationType,
-    adminId: number,
-    observaciones?: string[],
-  ) {
-    try {
-      const document = await this.em.findOneOrFail(
-        UserDocuments,
-        { id },
-        { populate: ['observaciones'] },
-      );
-
-      const user = await this.em.findOneOrFail(User, { documentos: { id } });
-
-      if (operation === 'approve') {
-        if (document.status === 'rejected') {
-          this.em.remove(document.observaciones.getItems());
-          document.observaciones.removeAll();
-        } else document.status = 'approved';
-      } else if (operation === 'reject') {
-        document.status = 'rejected';
-        document.observaciones.add(
-          observaciones.map((observacion) =>
-            this.em.create(Documents_Observaciones, { observacion }),
-          ),
+      if (adminRole !== 'admin' && user.role === 'admin')
+        throw new ForbiddenException(
+          'No tienes permisos para eliminar a este usuario',
         );
-      }
 
-      await this.em.persistAndFlush(document);
+      user.isDeleted = true;
+
+      await this.em.persistAndFlush(user);
 
       this.activityHistoryService.createActivityHistory({
-        action: 'update',
-        description: DOCUMENTS_OPREATIONS_MESSAGES[operation],
+        action: 'delete',
+        description: 'Se ha eliminado un usuario',
         updatedBy: adminId,
         userAffected: user.id,
       });
 
       return {
-        message: 'El documento ha sido actualizado con exito',
+        message: 'El usuario ha sido eliminado con exito',
       };
     } catch (error) {
-      throw new BadRequestException('No se pudo actualizar el documento');
+      console.error(error);
+      throw new InternalServerErrorException('No se pudo eliminar el usuario');
     }
   }
 }
