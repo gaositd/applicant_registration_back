@@ -12,7 +12,7 @@ import { hash } from 'bcrypt';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
-import { USER_STATUS_TYPE, User } from 'src/models/user';
+import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
@@ -27,8 +27,31 @@ export class UsersService {
     private readonly activityHistoryService: ActivityHistoryService,
   ) {}
 
-  async find() {
-    return this.em.find(User, {});
+  async find(
+    status?: USER_STATUS_TYPE,
+    search?: string,
+    page?: number,
+    USER_ROLE?: USER_ROLES_TYPE | USER_ROLES_TYPE[],
+  ) {
+    const statusOptions = status ? { status } : {};
+    const searchOptions = search
+      ? {
+          $or: [
+            { matricula: { $ilike: `%${search}%` } },
+            { nombre: { $ilike: `%${search}%` } },
+          ],
+        }
+      : {};
+    const pageOptions = page ? { limit: 10, offset: page * 10 } : {};
+    const roleOptions = USER_ROLE
+      ? { role: Array.isArray(USER_ROLE) ? { $in: USER_ROLE } : USER_ROLE }
+      : {};
+    return this.em.find(User, {
+      ...pageOptions,
+      ...searchOptions,
+      ...statusOptions,
+      ...roleOptions,
+    });
   }
 
   async findOne(
@@ -152,35 +175,6 @@ export class UsersService {
       };
     } catch (error) {
       throw new BadRequestException('No se pudo crear el usuario');
-    }
-  }
-
-  async findProspectos(
-    status?: USER_STATUS_TYPE,
-    search?: string,
-    page?: number,
-  ) {
-    const statusOptions = status ? { status } : {};
-    const searchOptions = search
-      ? {
-          $or: [
-            { matricula: { $ilike: `%${search}%` } },
-            { nombre: { $ilike: `%${search}%` } },
-          ],
-        }
-      : {};
-
-    try {
-      const prospectos = await this.em.find(User, {
-        role: 'prospecto',
-        ...searchOptions,
-        ...statusOptions,
-      });
-
-      return prospectos;
-    } catch (error) {
-      console.error(error);
-      throw new BadGatewayException('No se pudo obtener los prospectos');
     }
   }
 

@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Param,
   Post,
@@ -20,6 +21,7 @@ import { UserRegisterDTO } from './dto/userRegister.dto';
 import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
 import { ExcludeDeletedusers } from './interceptors/filterDeleteUser.interceptor';
+import { USER_ROLES_TYPE } from 'src/models/user';
 
 @UseGuards(AuthenticatedGuard)
 @UseInterceptors(ExcludeDeletedusers)
@@ -29,21 +31,28 @@ export class UsersController {
 
   @Roles('admin', 'secretaria')
   @Get('/')
-  async findUsers() {
-    return this.usersService.find();
-  }
-
-  @Roles('admin', 'secretaria')
-  @Get('/prospectos')
-  async findProspectos(
+  async findUsers(
     @Query('status') status: QueryUserType = 'all',
     @Query('search') search: string,
     @Query('page') page: number,
+    @Query('role') role: USER_ROLES_TYPE | USER_ROLES_TYPE[],
+    @Req() req: RequestType,
   ) {
-    return this.usersService.findProspectos(
+    if (req.user.role === 'secretaria' && role === 'admin')
+      throw new ForbiddenException(
+        'No tienes permisos para ver administradores',
+      );
+
+    if (Array.isArray(role) && role.includes('admin'))
+      throw new ForbiddenException(
+        'No tienes permisos para ver administradores',
+      );
+
+    return this.usersService.find(
       status === 'all' ? undefined : status,
       search,
       page,
+      role,
     );
   }
 
