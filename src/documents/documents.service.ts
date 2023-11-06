@@ -125,6 +125,15 @@ export class DocumentsService {
         .getItems()
         .find((document) => document.fileType === documentType);
 
+        if(document.status === 'rejected' ){
+          this.em.remove(document.observaciones.getItems());
+          document.observaciones.removeAll();
+        }
+
+        if(document.status === 'approved' ){
+          throw new BadRequestException('El documento ya ha sido aprovado');
+        }
+
       document.status = 'reviewing';
 
       const newPath = path.join('./uploads', getCurrentPeriod(), matricula);
