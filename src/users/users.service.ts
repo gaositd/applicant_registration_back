@@ -1,6 +1,5 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import {
-  BadGatewayException,
   BadRequestException,
   ForbiddenException,
   Injectable,
@@ -12,12 +11,13 @@ import { hash } from 'bcrypt';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
+import { USER_OPERATIONS_MESSAGES } from 'src/constants';
 import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
+import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula, generatePassword } from './utils';
-import { adminRegisterDTO } from './dto/adminRegisterDTo';
 
 @Injectable()
 export class UsersService {
@@ -111,7 +111,7 @@ export class UsersService {
 
       const response = await this.activityHistoryService.createActivityHistory({
         action: 'create',
-        description: 'Se ha registrado un nuevo usuario',
+        description: USER_OPERATIONS_MESSAGES.create,
         updatedBy: adminId,
         userAffected: newUser.id,
       });
@@ -139,7 +139,7 @@ export class UsersService {
 
     this.activityHistoryService.createActivityHistory({
       action: 'update',
-      description: 'Se ha actualizado un usuario',
+      description: USER_OPERATIONS_MESSAGES.update,
       updatedBy: adminId,
       userAffected: user.id,
     });
@@ -164,7 +164,7 @@ export class UsersService {
 
       this.activityHistoryService.createActivityHistory({
         action: 'create',
-        description: 'Se ha creado un nuevo administrador o secretaria',
+        description: USER_OPERATIONS_MESSAGES['create-admin'],
         updatedBy: adminId,
         userAffected: user.id,
       });
@@ -195,7 +195,7 @@ export class UsersService {
 
       this.activityHistoryService.createActivityHistory({
         action: 'delete',
-        description: 'Se ha eliminado un usuario',
+        description: USER_OPERATIONS_MESSAGES.delete,
         updatedBy: adminId,
         userAffected: user.id,
       });

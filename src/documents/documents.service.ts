@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from '../models/user';
-import { DOCUMENTS_OPREATIONS_MESSAGES } from '../contants';
+import { DOCUMENTS_OPERATIONS_MESSAGES } from '../constants';
 import { Documents_Observaciones } from '../models/documents_observaciones';
 import { FileTypeInterface, UserDocuments } from '../models/user_documents';
 import { OperationType } from '../users/dto/updateData.dto';
@@ -91,7 +91,7 @@ export class DocumentsService {
 
       this.activityHistoryService.createActivityHistory({
         action: 'update',
-        description: DOCUMENTS_OPREATIONS_MESSAGES[operation],
+        description: DOCUMENTS_OPERATIONS_MESSAGES[operation],
         updatedBy: adminId,
         userAffected: user.id,
       });
@@ -155,7 +155,7 @@ export class DocumentsService {
 
       this.activityHistoryService.createActivityHistory({
         action: 'update',
-        description: 'Se ha subido un nuevo documento',
+        description: DOCUMENTS_OPERATIONS_MESSAGES.upload,
         updatedBy: user.id,
         userAffected: user.id,
       });
