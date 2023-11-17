@@ -1,11 +1,15 @@
 import { EntityManager } from '@mikro-orm/core';
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { User } from '../models/user';
-import { DOCUMENTS_OPERATIONS_MESSAGES } from '../constants';
+import {
+  API_RESPONSE_MESSAGES,
+  DOCUMENTS_OPERATIONS_MESSAGES,
+} from '../constants';
 import { Documents_Observaciones } from '../models/documents_observaciones';
 import { FileTypeInterface, UserDocuments } from '../models/user_documents';
 import { OperationType } from '../users/dto/updateData.dto';
@@ -13,12 +17,14 @@ import { ActivityHistoryService } from '../activity-history/activity-history.ser
 import * as path from 'path';
 import { getCurrentPeriod, getFileName } from '../utils/users.utils';
 import * as fs from 'fs';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class DocumentsService {
   constructor(
     private readonly em: EntityManager,
     private readonly activityHistoryService: ActivityHistoryService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async findDocs(matricula: string) {
@@ -120,6 +126,13 @@ export class DocumentsService {
 
       if (!user.documentos.length)
         throw new BadRequestException('No se encontraron documentos');
+
+      if (
+        (await this.notificationsService.isUserExpedienteEnabled(user.id)) ===
+        false
+      ) {
+        throw new ForbiddenException(API_RESPONSE_MESSAGES.pendingNotification);
+      }
 
       const document = user.documentos
         .getItems()

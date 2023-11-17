@@ -28,6 +28,6 @@ export class ActivityHistory extends BaseModel {
   @Enum({ items: () => OPERATIONS })
   action: OPERATIONS_TYPE;
 
-  @ManyToOne()
-  userAffected: User;
+  @ManyToOne({ nullable: true })
+  userAffected?: User;
 }
