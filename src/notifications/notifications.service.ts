@@ -86,7 +86,7 @@ export class NotificationsService {
     }
   }
 
-  async addressNotification(id: number) {
+  async addressNotification(id: number, adminId: number) {
     try {
       const notification = await this.em.fork().findOneOrFail(
         Notification,
@@ -103,8 +103,8 @@ export class NotificationsService {
       await this.activityHistoryService.createActivityHistory({
         action: 'update',
         description: NOTIFICATION_OPERATIONS_MESSAGES.address,
-        updatedBy: notification.user.id,
-        userAffected: notification.user.id,
+        updatedBy: adminId,
+        userAffected: notification.user ? notification.user.id : undefined,
       });
 
       return {

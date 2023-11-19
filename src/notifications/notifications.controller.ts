@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   Put,
@@ -17,6 +18,11 @@ import { RequestType } from 'src/types';
 @Controller('notifications')
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
+
+  @Get()
+  getNotifications(@Req() req: RequestType) {
+    return this.notificationsService.getNotifications(req.user.id);
+  }
 
   @Roles('admin')
   @Post('/')
@@ -44,7 +50,7 @@ export class NotificationsController {
 
   @Roles('admin', 'secretaria')
   @Put('/:id')
-  updateNotification(@Param('id') id: number) {
-    return this.notificationsService.addressNotification(id);
+  updateNotification(@Param('id') id: number, @Req() req: RequestType) {
+    return this.notificationsService.addressNotification(id, req.user.id);
   }
 }
