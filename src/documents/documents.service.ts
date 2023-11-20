@@ -37,7 +37,11 @@ export class DocumentsService {
         { populate: ['documentos', 'documentos.observaciones'] },
       );
 
+      const isExpedienteBlocked =
+        await this.notificationsService.isUserExpedienteEnabled(user.id);
+
       return {
+        isExpedienteBlocked,
         documentos: user.documentos,
       };
     } catch (error) {
