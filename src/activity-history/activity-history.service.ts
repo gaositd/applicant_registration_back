@@ -6,7 +6,7 @@ import { User } from 'src/models/user';
 type ActivityHistoryType = {
   description?: string;
   action: OPERATIONS_TYPE;
-  userAffected: number;
+  userAffected?: number;
   updatedBy: number;
 };
 

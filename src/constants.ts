@@ -12,3 +12,13 @@ export const USER_OPERATIONS_MESSAGES = {
   update: 'Se ha actualizado un usuario',
   delete: 'Se ha eliminado un usuario',
 };
+
+export const NOTIFICATION_OPERATIONS_MESSAGES = {
+  create: 'Se ha creado una nueva notificación',
+  address: 'Se ha atendido una notificación',
+};
+
+export const API_RESPONSE_MESSAGES = {
+  pendingNotification:
+    'El expediente del usuario tiene notificaciones pendientes',
+};

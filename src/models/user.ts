@@ -11,6 +11,7 @@ import {
 import { ActivityHistory } from './activity_history';
 import { BaseModel } from './base';
 import { UserDocuments } from './user_documents';
+import { Notification } from './notification';
 
 enum USER_ROLES {
   ADMIN = 'admin',
@@ -63,4 +64,7 @@ export class User extends BaseModel {
     (activityHistory) => activityHistory.updatedBy,
   )
   activityHistory = new Collection<ActivityHistory>(this);
+
+  @OneToMany(() => Notification, (notification) => notification.user)
+  notifications = new Collection<Notification>(this);
 }
