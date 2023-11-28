@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ActivityHistoryModule } from './activity-history/activity-history.module';
 import { DocumentsModule } from './documents/documents.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     ActivityHistoryModule,
     DocumentsModule,
     NotificationsModule,
+    MailModule,
   ],
   controllers: [],
   providers: [],

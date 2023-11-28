@@ -18,6 +18,7 @@ import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula, generatePassword } from './utils';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -25,6 +26,7 @@ export class UsersService {
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly activityHistoryService: ActivityHistoryService,
+    private readonly mailService: MailService,
   ) {}
 
   async find(
@@ -117,6 +119,17 @@ export class UsersService {
       });
 
       if (!response.ok) throw new Error(response.error);
+
+      await this.mailService.sendMail({
+        to: newUser.mail,
+        subject: 'Registro exitoso',
+        template: 'user-register',
+        context: {
+          name: newUser.nombre,
+          matricula: newUser.matricula,
+          password,
+        },
+      });
 
       return {
         ...newUser,
