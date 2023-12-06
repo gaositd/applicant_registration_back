@@ -3,15 +3,14 @@ import {
   Entity,
   Enum,
   ManyToMany,
-  ManyToOne,
   OneToMany,
   Property,
   Unique,
 } from '@mikro-orm/core';
 import { ActivityHistory } from './activity_history';
 import { BaseModel } from './base';
-import { UserDocuments } from './user_documents';
 import { Notification } from './notification';
+import { UserDocuments } from './user_documents';
 
 enum USER_ROLES {
   ADMIN = 'admin',
@@ -27,7 +26,7 @@ enum USER_STATUS {
   DUEUED = 'dueued',
 }
 
-enum USER_CIVIL_STATUS {
+export enum USER_CIVIL_STATUS {
   SOLTERO = 'soltero',
   CASADO = 'casado',
   DIVORCIADO = 'divorciado',
@@ -37,47 +36,47 @@ enum USER_CIVIL_STATUS {
 export type USER_CIVIL_STATUS_TYPE = `${USER_CIVIL_STATUS}`;
 
 export type USER_STATUS_TYPE = `${USER_STATUS}`;
-
-enum ESTADO {
-  AGUASCALIENTES = 'Aguascalientes',
-  BAJA_CALIFORNIA = 'Baja California',
-  BAJA_CALIFORNIA_SUR = 'Baja California Sur',
-  CAMPECHE = 'Campeche',
-  CHIAPAS = 'Chiapas',
-  CHIHUAHUA = 'Chihuahua',
-  CIUDAD_DE_MEXICO = 'Ciudad de México',
-  COAHUILA = 'Coahuila',
-  COLIMA = 'Colima',
-  DURANGO = 'Durango',
-  ESTADO_DE_MEXICO = 'Estado de México',
-  GUANAJUATO = 'Guanajuato',
-  GUERRERO = 'Guerrero',
-  HIDALGO = 'Hidalgo',
-  JALISCO = 'Jalisco',
-  MICHOACAN = 'Michoacán',
-  MORELOS = 'Morelos',
-  NAYARIT = 'Nayarit',
-  NUEVO_LEON = 'Nuevo León',
-  OAXACA = 'Oaxaca',
-  PUEBLA = 'Puebla',
-  QUERETARO = 'Querétaro',
-  QUINTANA_ROO = 'Quintana Roo',
-  SAN_LUIS_POTOSI = 'San Luis Potosí',
-  SINALOA = 'Sinaloa',
-  SONORA = 'Sonora',
-  TABASCO = 'Tabasco',
-  TAMAULIPAS = 'Tamaulipas',
-  TLAXCALA = 'Tlaxcala',
-  VERACRUZ = 'Veracruz',
-  YUCATAN = 'Yucatán',
-  ZACATECAS = 'Zacatecas',
+export enum Estado {
+  Aguascalientes = 'Aguascalientes',
+  BajaCalifornia = 'Baja California',
+  BajaCaliforniaSur = 'Baja California Sur',
+  Campeche = 'Campeche',
+  Chiapas = 'Chiapas',
+  Chihuahua = 'Chihuahua',
+  CiudadDeMexico = 'Ciudad de México',
+  Coahuila = 'Coahuila',
+  Colima = 'Colima',
+  Durango = 'Durango',
+  EstadoDeMexico = 'Estado de México',
+  Guanajuato = 'Guanajuato',
+  Guerrero = 'Guerrero',
+  Hidalgo = 'Hidalgo',
+  Jalisco = 'Jalisco',
+  Michoacan = 'Michoacán',
+  Morelos = 'Morelos',
+  Nayarit = 'Nayarit',
+  NuevoLeon = 'Nuevo León',
+  Oaxaca = 'Oaxaca',
+  Puebla = 'Puebla',
+  Queretaro = 'Querétaro',
+  QuintanaRoo = 'Quintana Roo',
+  SanLuisPotosi = 'San Luis Potosí',
+  Sinaloa = 'Sinaloa',
+  Sonora = 'Sonora',
+  Tabasco = 'Tabasco',
+  Tamaulipas = 'Tamaulipas',
+  Tlaxcala = 'Tlaxcala',
+  Veracruz = 'Veracruz',
+  Yucatan = 'Yucatán',
+  Zacatecas = 'Zacatecas',
 }
 
-export type ESTADO_TYPE = `${ESTADO}`;
+export type ESTADO_TYPE = `${Estado}`;
 
 export enum USER_SEXO {
   MASCULINO = 'masculino',
   FEMENINO = 'femenino',
+  OTRO = 'otro',
 }
 
 export type USER_SEXO_TYPE = `${USER_SEXO}`;
@@ -96,10 +95,10 @@ export class User extends BaseModel {
   fechaNacimiento: Date;
 
   @Unique()
-  @Property()
+  @Property({ nullable: true })
   curp: string;
 
-  @Property()
+  @Property({ nullable: true })
   direccion: string;
 
   @Property()
@@ -108,36 +107,41 @@ export class User extends BaseModel {
   @Property({ nullable: true })
   telefono: string;
 
-  @Property()
+  @Property({ nullable: true })
   foto: string;
 
   @Enum({
     items: () => USER_SEXO,
+    nullable: true,
   })
   sexo: USER_SEXO_TYPE;
 
-  @Property()
+  @Property({
+    nullable: true,
+  })
   trabaja: boolean;
 
   @Enum({
     items: () => USER_CIVIL_STATUS,
     default: USER_CIVIL_STATUS.SOLTERO,
+    nullable: true,
   })
   estadoCivil: USER_CIVIL_STATUS_TYPE;
 
   @Enum({
-    items: () => ESTADO,
+    items: () => Estado,
+    nullable: true,
   })
   estado: ESTADO_TYPE;
 
-  @Property()
+  @Property({ nullable: true })
   escuelaProcedencia: string;
 
-  @Property()
+  @Property({ nullable: true })
   promedio: number;
 
-  @Property()
-  mail: string;
+  @Property({})
+  email: string;
 
   @Property()
   @Unique()

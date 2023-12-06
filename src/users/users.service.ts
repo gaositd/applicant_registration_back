@@ -87,24 +87,10 @@ export class UsersService {
 
       newUser.matricula = createMatricula(12);
 
-      const documentsRawFile = fs.readFileSync(
-        path.resolve(__dirname, './../../config/documents.json'),
-        'utf-8',
-      );
-
-      type documentFileType = {
-        document: string;
-        fileType: string[];
-      };
-
-      const documents: documentFileType[] = JSON.parse(documentsRawFile);
-
-      documents.forEach((document) => {
-        console.log(FileType[document.document]);
-
+      Object.keys(FileType).forEach((document) => {
         newUser.documentos.add(
           this.em.create(UserDocuments, {
-            fileType: FileType[document.document],
+            fileType: document as FileType,
           }),
         );
       });
@@ -121,7 +107,7 @@ export class UsersService {
       if (!response.ok) throw new Error(response.error);
 
       await this.mailService.sendMail({
-        to: newUser.mail,
+        to: newUser.email,
         subject: 'Registro exitoso',
         template: 'user-register',
         context: {

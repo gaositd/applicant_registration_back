@@ -6,7 +6,7 @@ import { USER_ROLES_TYPE } from 'src/models/user';
 interface userData {
   id: number;
   nombre: string;
-  mail: string;
+  email: string;
   matricula: string;
   isDeleted: boolean;
   createdAt: Date;
