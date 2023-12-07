@@ -72,7 +72,7 @@ export class UsersService {
     return user;
   }
 
-  async create(userData: UserRegisterDTO, adminId: number) {
+  async create(userData: UserRegisterDTO, adminId?: number) {
     try {
       const password = generatePassword(10);
 
@@ -100,7 +100,7 @@ export class UsersService {
       const response = await this.activityHistoryService.createActivityHistory({
         action: 'create',
         description: USER_OPERATIONS_MESSAGES.create,
-        updatedBy: adminId,
+        updatedBy: adminId ? adminId : newUser.id,
         userAffected: newUser.id,
       });
 

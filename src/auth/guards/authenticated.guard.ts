@@ -11,6 +11,13 @@ export class AuthenticatedGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
+    const isPublic = this.reflector.get<boolean>(
+      'isPublic',
+      context.getHandler(),
+    );
+
+    if (isPublic) return true;
+
     const request = context.switchToHttp().getRequest<Request>();
     if (!request.user) return false;
 

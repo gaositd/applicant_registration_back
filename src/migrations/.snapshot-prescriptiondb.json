@@ -762,7 +762,9 @@
           "enumItems": [
             "curp",
             "acta_nacimiento",
-            "comprobante_domicilio"
+            "comprobante_domicilio",
+            "certificado_bachillerato",
+            "certificado_secundaria"
           ],
           "mappedType": "enum"
         },

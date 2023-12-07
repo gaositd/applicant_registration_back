@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20231206072313_initial_model_declaration extends Migration {
+export class Migration20231206211421_initial_model_declaration extends Migration {
 
   async up(): Promise<void> {
     this.addSql('create table "configs" ("id" serial primary key, "created_at" timestamptz(0) not null default \'NOW()\', "updated_at" timestamptz(0) not null, "config_type" text check ("config_type" in (\'value\', \'user_config\', \'app_config\')) not null, "name" varchar(255) not null, "value" varchar(255) not null);');
@@ -16,7 +16,7 @@ export class Migration20231206072313_initial_model_declaration extends Migration
 
     this.addSql('create table "activity_history" ("id" serial primary key, "created_at" timestamptz(0) not null default \'NOW()\', "updated_at" timestamptz(0) not null, "description" varchar(255) null, "updated_by_id" int not null, "action" text check ("action" in (\'create\', \'update\', \'delete\')) not null, "user_affected_id" int null);');
 
-    this.addSql('create table "user_documents" ("id" serial primary key, "created_at" timestamptz(0) not null default \'NOW()\', "updated_at" timestamptz(0) not null, "file_type" text check ("file_type" in (\'curp\', \'acta_nacimiento\', \'comprobante_domicilio\')) not null, "ruta" varchar(255) null, "mime_type" varchar(255) null, "status" text check ("status" in (\'approved\', \'reviewing\', \'rejected\', \'open-to-upload\')) not null default \'open-to-upload\');');
+    this.addSql('create table "user_documents" ("id" serial primary key, "created_at" timestamptz(0) not null default \'NOW()\', "updated_at" timestamptz(0) not null, "file_type" text check ("file_type" in (\'curp\', \'acta_nacimiento\', \'comprobante_domicilio\', \'certificado_bachillerato\', \'certificado_secundaria\')) not null, "ruta" varchar(255) null, "mime_type" varchar(255) null, "status" text check ("status" in (\'approved\', \'reviewing\', \'rejected\', \'open-to-upload\')) not null default \'open-to-upload\');');
 
     this.addSql('create table "user_documents_observaciones" ("user_documents_id" int not null, "documents_observaciones_id" int not null, constraint "user_documents_observaciones_pkey" primary key ("user_documents_id", "documents_observaciones_id"));');
 
