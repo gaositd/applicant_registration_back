@@ -8,10 +8,9 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { hash } from 'bcrypt';
-import * as fs from 'fs';
-import * as path from 'path';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
 import { USER_OPERATIONS_MESSAGES } from 'src/constants';
+import { MailService } from 'src/mail/mail.service';
 import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
@@ -25,6 +24,7 @@ export class UsersService {
     private readonly em: EntityManager,
     private readonly configService: ConfigService,
     private readonly activityHistoryService: ActivityHistoryService,
+    private readonly mailService: MailService,
   ) {}
 
   async find(
@@ -70,7 +70,7 @@ export class UsersService {
     return user;
   }
 
-  async create(userData: UserRegisterDTO, adminId: number) {
+  async create(userData: UserRegisterDTO, adminId?: number) {
     try {
       const password = generatePassword(10);
 
@@ -85,24 +85,10 @@ export class UsersService {
 
       newUser.matricula = createMatricula(12);
 
-      const documentsRawFile = fs.readFileSync(
-        path.resolve(__dirname, './../../config/documents.json'),
-        'utf-8',
-      );
-
-      type documentFileType = {
-        document: string;
-        fileType: string[];
-      };
-
-      const documents: documentFileType[] = JSON.parse(documentsRawFile);
-
-      documents.forEach((document) => {
-        console.log(FileType[document.document]);
-
+      Object.keys(FileType).forEach((document) => {
         newUser.documentos.add(
           this.em.create(UserDocuments, {
-            fileType: FileType[document.document],
+            fileType: document as FileType,
           }),
         );
       });
@@ -112,11 +98,23 @@ export class UsersService {
       const response = await this.activityHistoryService.createActivityHistory({
         action: 'create',
         description: USER_OPERATIONS_MESSAGES.create,
-        updatedBy: adminId,
+        updatedBy: adminId ? adminId : newUser.id,
         userAffected: newUser.id,
       });
 
       if (!response.ok) throw new Error(response.error);
+
+      await this.mailService.sendMail({
+        to: newUser.email,
+        subject: 'Pre-registro facultad de matematicas UJED',
+        template: 'user-register',
+        context: {
+          name: newUser.nombre,
+          matricula: newUser.matricula,
+          password,
+          loginUrl: `${this.configService.get<string>('CLIENT_URL')}/login}`,
+        },
+      });
 
       return {
         ...newUser,
@@ -124,6 +122,10 @@ export class UsersService {
       };
     } catch (error) {
       console.error(error);
+      if (error.code === '23505')
+        throw new BadRequestException(
+          'El aspirante ya se encuentra registrado',
+        );
       throw new BadRequestException('No se pudo crear el usuario');
     }
   }

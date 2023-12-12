@@ -13,6 +13,8 @@ export enum FileType {
   curp = 'curp',
   acta_nacimiento = 'acta_nacimiento',
   comprobante_domicilio = 'comprobante_domicilio',
+  certificado_bachillerato = 'certificado_bachillerato',
+  certificado_secundaria = 'certificado_secundaria',
 }
 
 export type FileTypeInterface = `${FileType}`;

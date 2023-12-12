@@ -193,8 +193,181 @@
           "nullable": false,
           "mappedType": "string"
         },
-        "mail": {
-          "name": "mail",
+        "apellido_paterno": {
+          "name": "apellido_paterno",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "apellido_materno": {
+          "name": "apellido_materno",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "fecha_nacimiento": {
+          "name": "fecha_nacimiento",
+          "type": "timestamptz(0)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "curp": {
+          "name": "curp",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "direccion": {
+          "name": "direccion",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "celular": {
+          "name": "celular",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "telefono": {
+          "name": "telefono",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "foto": {
+          "name": "foto",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "sexo": {
+          "name": "sexo",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "masculino",
+            "femenino",
+            "otro"
+          ],
+          "mappedType": "enum"
+        },
+        "trabaja": {
+          "name": "trabaja",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
+        },
+        "estado_civil": {
+          "name": "estado_civil",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "'soltero'",
+          "enumItems": [
+            "soltero",
+            "casado",
+            "divorciado",
+            "viudo"
+          ],
+          "mappedType": "enum"
+        },
+        "estado": {
+          "name": "estado",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "Aguascalientes",
+            "Baja California",
+            "Baja California Sur",
+            "Campeche",
+            "Chiapas",
+            "Chihuahua",
+            "Ciudad de México",
+            "Coahuila",
+            "Colima",
+            "Durango",
+            "Estado de México",
+            "Guanajuato",
+            "Guerrero",
+            "Hidalgo",
+            "Jalisco",
+            "Michoacán",
+            "Morelos",
+            "Nayarit",
+            "Nuevo León",
+            "Oaxaca",
+            "Puebla",
+            "Querétaro",
+            "Quintana Roo",
+            "San Luis Potosí",
+            "Sinaloa",
+            "Sonora",
+            "Tabasco",
+            "Tamaulipas",
+            "Tlaxcala",
+            "Veracruz",
+            "Yucatán",
+            "Zacatecas"
+          ],
+          "mappedType": "enum"
+        },
+        "escuela_procedencia": {
+          "name": "escuela_procedencia",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "promedio": {
+          "name": "promedio",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
+        "email": {
+          "name": "email",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
@@ -219,6 +392,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "lengua_indigena": {
+          "name": "lengua_indigena",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "boolean"
         },
         "is_deleted": {
           "name": "is_deleted",
@@ -264,6 +446,15 @@
       "name": "user",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "curp"
+          ],
+          "composite": false,
+          "keyName": "user_curp_unique",
+          "primary": false,
+          "unique": true
+        },
         {
           "columnNames": [
             "matricula"
@@ -571,7 +762,9 @@
           "enumItems": [
             "curp",
             "acta_nacimiento",
-            "comprobante_domicilio"
+            "comprobante_domicilio",
+            "certificado_bachillerato",
+            "certificado_secundaria"
           ],
           "mappedType": "enum"
         },

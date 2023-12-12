@@ -14,7 +14,11 @@ export class DevelopmentSeeder extends Seeder {
 
     const admin = em.create(User, {
       nombre: 'Admin Jonathan',
-      mail: 'admin@admin.com',
+      apellidoMaterno: 'AMaterno',
+      apellidoPaterno: 'APaterno',
+      fechaNacimiento: new Date('1999-01-01'),
+      celular: '1234567890',
+      email: 'admin@admin.com',
       password: hashedPassword,
       role: 'admin',
       matricula,
@@ -27,7 +31,11 @@ export class DevelopmentSeeder extends Seeder {
 
     const secretaria = em.create(User, {
       nombre: 'Secretaria Jonathan',
-      mail: 'secretaria@secretaria.com',
+      apellidoMaterno: 'AMaterno',
+      apellidoPaterno: 'APaterno ',
+      fechaNacimiento: new Date('1999-01-01'),
+      celular: '1234567890',
+      email: 'secretaria@secretaria.com',
       password: hashedPasswordSecretaria,
       role: 'secretaria',
       matricula: 'YgvInAxNrBDg',

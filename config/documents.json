@@ -1,14 +1,22 @@
 [
   {
     "document": "curp",
-    "filetypes": ["png", "jpg", "pdf"]
+    "filetypes": ["pdf"]
   },
   {
     "document": "acta_nacimiento",
-    "filetypes": ["png", "jpg", "pdf"]
+    "filetypes": ["pdf"]
   },
   {
     "document": "comprobante_domicilio",
-    "filetypes": ["png", "jpg", "pdf"]
+    "filetypes": ["pdf"]
+  },
+  {
+    "document": "certificado_bachillerato",
+    "filetypes": ["pdf"]
+  },
+  {
+    "documents": "certificado_secundaria",
+    "filetypes": ["pdf"]
   }
 ]

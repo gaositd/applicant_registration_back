@@ -6,7 +6,10 @@ import { ConfigModule } from '@nestjs/config';
 import { ActivityHistoryModule } from './activity-history/activity-history.module';
 import { DocumentsModule } from './documents/documents.module';
 import { NotificationsModule } from './notifications/notifications.module';
-
+import { MailModule } from './mail/mail.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as path from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -16,6 +19,20 @@ import { NotificationsModule } from './notifications/notifications.module';
     ActivityHistoryModule,
     DocumentsModule,
     NotificationsModule,
+    MailModule,
+    MailerModule.forRoot({
+      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      defaults: {
+        from: '"No Reply" <test@test.com>',
+      },
+      template: {
+        dir: path.join(__dirname, '../', 'templates'),
+        adapter: new HandlebarsAdapter(),
+        options: {
+          strict: true,
+        },
+      },
+    }),
   ],
   controllers: [],
   providers: [],

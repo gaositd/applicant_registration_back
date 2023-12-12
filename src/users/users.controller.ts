@@ -22,6 +22,7 @@ import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
 import { ExcludeDeletedusers } from './interceptors/filterDeleteUser.interceptor';
 import { USER_ROLES_TYPE } from 'src/models/user';
+import { IsPublic } from './guards/public.decorator';
 
 @UseGuards(AuthenticatedGuard)
 @UseInterceptors(ExcludeDeletedusers)
@@ -71,10 +72,10 @@ export class UsersController {
     return parsedUser;
   }
 
-  @Roles('admin', 'secretaria')
+  @IsPublic()
   @Post('/')
   async newUser(@Body() userData: UserRegisterDTO, @Req() req: RequestType) {
-    return this.usersService.create(userData, req.user.id);
+    return this.usersService.create(userData, req.user?.id);
   }
 
   @Roles('admin')
