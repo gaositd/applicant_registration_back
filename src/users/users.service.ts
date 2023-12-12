@@ -8,17 +8,15 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { hash } from 'bcrypt';
-import * as fs from 'fs';
-import * as path from 'path';
 import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
 import { USER_OPERATIONS_MESSAGES } from 'src/constants';
+import { MailService } from 'src/mail/mail.service';
 import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
 import { FileType, UserDocuments } from 'src/models/user_documents';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { createMatricula, generatePassword } from './utils';
-import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UsersService {
@@ -108,12 +106,13 @@ export class UsersService {
 
       await this.mailService.sendMail({
         to: newUser.email,
-        subject: 'Registro exitoso',
+        subject: 'Pre-registro facultad de matematicas UJED',
         template: 'user-register',
         context: {
           name: newUser.nombre,
           matricula: newUser.matricula,
           password,
+          loginUrl: `${this.configService.get<string>('CLIENT_URL')}/login}`,
         },
       });
 
@@ -123,6 +122,10 @@ export class UsersService {
       };
     } catch (error) {
       console.error(error);
+      if (error.code === '23505')
+        throw new BadRequestException(
+          'El aspirante ya se encuentra registrado',
+        );
       throw new BadRequestException('No se pudo crear el usuario');
     }
   }
