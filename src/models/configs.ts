@@ -1,14 +1,7 @@
-import {
-  Entity,
-  Enum,
-  ManyToMany,
-  ManyToOne,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { Entity, Enum, Property, Unique } from '@mikro-orm/core';
 import { BaseModel } from './base';
 
-enum CONFIG {
+export enum CONFIG {
   VALUE = 'value',
   USER_CONFIG = 'user_config',
   APP_CONFIG = 'app_config',
@@ -24,6 +17,9 @@ export class Configs extends BaseModel {
   @Unique()
   @Property()
   name: string;
+
+  @Property({ nullable: true })
+  description?: string;
 
   @Property()
   value: string;

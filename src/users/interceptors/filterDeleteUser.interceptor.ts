@@ -1,8 +1,8 @@
 import {
+  CallHandler,
+  ExecutionContext,
   Injectable,
   NestInterceptor,
-  ExecutionContext,
-  CallHandler,
   NotFoundException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { User } from 'src/models/user';
 
 @Injectable()
 export class ExcludeDeletedusers implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(_: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((value: unknown | unknown[]) => {
         if (

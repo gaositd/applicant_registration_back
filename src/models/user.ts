@@ -153,6 +153,9 @@ export class User extends BaseModel {
   @Property({ nullable: true })
   lenguaIndigena: boolean;
 
+  @Property({ nullable: true })
+  consecutivoFolio: number;
+
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
 

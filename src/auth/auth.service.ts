@@ -31,5 +31,7 @@ export class AuthService {
 
       return userData;
     }
+
+    return null;
   }
 }
