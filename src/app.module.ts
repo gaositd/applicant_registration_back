@@ -9,7 +9,9 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { MailModule } from './mail/mail.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import * as path from 'path';
+import { SettingsModule } from './settings/settings.module';
+import { ReportesModule } from './reportes/reportes.module';
+import path from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -33,6 +35,9 @@ import * as path from 'path';
         },
       },
     }),
+    ConfigModule,
+    SettingsModule,
+    ReportesModule,
   ],
   controllers: [],
   providers: [],

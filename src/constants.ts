@@ -22,3 +22,19 @@ export const API_RESPONSE_MESSAGES = {
   pendingNotification:
     'El expediente del usuario tiene notificaciones pendientes',
 };
+
+export const CONFIG_APPS_CONSTANTS = {
+  consecutivoFollio: 'folio-consecutivo',
+  cuentabancaria: 'bank-numero-cuenta',
+  clabe: 'bank-clabe',
+  nombreBanco: 'bank-name',
+  cuotaPreferencial: 'cuota-escuela-interna',
+  cuotaGeneral: 'cuota-escuela-general',
+};
+
+export const ERROR_MESSAGES = {
+  CANTGENERATEFICHA:
+    'No se ha podido generar la ficha, intentalo de nuevo o ponte en contacto con el administador.',
+};
+
+export const PREPAS_UJED = ['Nocturna', 'Diurna', 'CCH'];

@@ -1,4 +1,3 @@
-import { Enum } from '@mikro-orm/core';
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 import { ENotificationType, TNotificationType } from 'src/models/notification';
 
