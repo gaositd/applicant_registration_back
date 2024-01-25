@@ -21,6 +21,8 @@ export const NOTIFICATION_OPERATIONS_MESSAGES = {
 export const API_RESPONSE_MESSAGES = {
   pendingNotification:
     'El expediente del usuario tiene notificaciones pendientes',
+  SEMESTER_CLOSED:
+    'El semestre se encuentra cerrado, no se pueden subir archivos',
 };
 
 export const CONFIG_APPS_CONSTANTS = {
@@ -30,11 +32,19 @@ export const CONFIG_APPS_CONSTANTS = {
   nombreBanco: 'bank-name',
   cuotaPreferencial: 'cuota-escuela-interna',
   cuotaGeneral: 'cuota-escuela-general',
+  semestreStatus: 'semestre-status',
 };
 
 export const ERROR_MESSAGES = {
   CANTGENERATEFICHA:
     'No se ha podido generar la ficha, intentalo de nuevo o ponte en contacto con el administador.',
+  ERROR_ACCESING_APAP_INFO:
+    'No se ha podido acceder a la información, intentalo de nuevo o ponte en contacto con el administador.',
 };
 
 export const PREPAS_UJED = ['Nocturna', 'Diurna', 'CCH'];
+
+export const SEMESTER_STATUS = {
+  OPEN: 'abierto',
+  CLOSED: 'cerrado',
+};

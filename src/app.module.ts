@@ -11,6 +11,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { SettingsModule } from './settings/settings.module';
 import { ReportesModule } from './reportes/reportes.module';
+import { SemestreModule } from './semestre/semestre.module';
 import path from 'path';
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import path from 'path';
     ConfigModule,
     SettingsModule,
     ReportesModule,
+    SemestreModule,
   ],
   controllers: [],
   providers: [],
