@@ -1,5 +1,21 @@
 ### UJED Prescriptions API - NestJS
 
+
+## Funcionalidades pendientes
+- [x] Agregar proceso de finalizacion de semestre
+- [x] Agregar proceso de inicializacion de semestre
+- [ ] Agregar test unitarios para api de documentos
+- [ ] Agreegar test unitarios para api de notificaciones
+- [ ] Test uniarios para api de reportes
+- [ ] Test unitarios api de usuarios
+- [ ] Test unitarios api de mails
+- [ ] Test unitarios api Configuraciones
+- [ ] Menu en el panel de administrador para configuraciones
+- [ ] Menu en el panel de administrador para iniciar/finalizar semestre
+- [ ] Request en panel de usuario para leer notificaciones
+- [ ] Agregar Menu en el panel de administradores para crear notificaciones
+
+
 ## Description
 
 API para el servicio de preinscripciones de la UJED (Universidad Juárez del Estado de Durango)

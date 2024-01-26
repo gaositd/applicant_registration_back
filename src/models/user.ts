@@ -20,7 +20,7 @@ enum USER_ROLES {
 
 export type USER_ROLES_TYPE = `${USER_ROLES}`;
 
-enum USER_STATUS {
+export enum USER_STATUS {
   COMPLETED = 'completed',
   PENDING = 'pending',
   DUEUED = 'dueued',

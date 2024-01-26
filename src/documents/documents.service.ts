@@ -9,6 +9,7 @@ import { User } from '../models/user';
 import {
   API_RESPONSE_MESSAGES,
   DOCUMENTS_OPERATIONS_MESSAGES,
+  SEMESTER_STATUS,
 } from '../constants';
 import { Documents_Observaciones } from '../models/documents_observaciones';
 import { FileTypeInterface, UserDocuments } from '../models/user_documents';
@@ -18,6 +19,7 @@ import * as path from 'path';
 import { getCurrentPeriod, getFileName } from '../utils/users.utils';
 import * as fs from 'fs';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { SemestreService } from 'src/semestre/semestre.service';
 
 @Injectable()
 export class DocumentsService {
@@ -25,6 +27,7 @@ export class DocumentsService {
     private readonly em: EntityManager,
     private readonly activityHistoryService: ActivityHistoryService,
     private readonly notificationsService: NotificationsService,
+    private readonly semestreService: SemestreService,
   ) {}
 
   async findDocs(matricula: string) {
@@ -40,11 +43,19 @@ export class DocumentsService {
       const isExpedienteBlocked =
         await this.notificationsService.isUserExpedienteEnabled(user.id);
 
+      const isSemestreClosed = await this.semestreService.getSemestreStatus();
+
+      if (isSemestreClosed === SEMESTER_STATUS.CLOSED)
+        throw new ForbiddenException(API_RESPONSE_MESSAGES.SEMESTER_CLOSED);
+
       return {
         isExpedienteBlocked,
         documentos: user.documentos,
       };
     } catch (error) {
+      if (!(error instanceof NotFoundException)) {
+        throw error;
+      }
       throw new NotFoundException('User not found');
     }
   }
@@ -56,6 +67,10 @@ export class DocumentsService {
       const user = await this.em.findOneOrFail(User, options, {
         populate: ['documentos', 'documentos.observaciones'],
       });
+      const isSemestreClosed = await this.semestreService.getSemestreStatus();
+
+      if (isSemestreClosed === SEMESTER_STATUS.CLOSED)
+        throw new ForbiddenException(API_RESPONSE_MESSAGES.SEMESTER_CLOSED);
 
       return {
         name: user.nombre,
@@ -63,6 +78,10 @@ export class DocumentsService {
         documentos: user.documentos,
       };
     } catch (error) {
+      if (!(error instanceof NotFoundException)) {
+        throw error;
+      }
+
       throw new NotFoundException('User not found');
     }
   }
@@ -138,6 +157,12 @@ export class DocumentsService {
         throw new ForbiddenException(API_RESPONSE_MESSAGES.pendingNotification);
       }
 
+      if (
+        (await this.semestreService.getSemestreStatus()) ===
+        SEMESTER_STATUS.CLOSED
+      ) {
+        throw new ForbiddenException(API_RESPONSE_MESSAGES.SEMESTER_CLOSED);
+      }
       const document = user.documentos
         .getItems()
         .find((document) => document.fileType === documentType);
