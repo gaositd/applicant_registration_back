@@ -38,8 +38,10 @@ export const CONFIG_APPS_CONSTANTS = {
 export const ERROR_MESSAGES = {
   CANTGENERATEFICHA:
     'No se ha podido generar la ficha, intentalo de nuevo o ponte en contacto con el administador.',
-  ERROR_ACCESING_APAP_INFO:
+  ERROR_ACCESING_APP_INFO:
     'No se ha podido acceder a la información, intentalo de nuevo o ponte en contacto con el administador.',
+  ERROR_STARTING_SEMESTER:
+    'No se ha podido iniciar el semestre, hay configuraciones pendientes, revisa la configuración del sistema.',
 };
 
 export const PREPAS_UJED = ['Nocturna', 'Diurna', 'CCH'];
