@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { ActivityHistory, OPERATIONS_TYPE } from 'src/models/activity_history';
-import { User } from 'src/models/user';
+import { ActivityHistory, OPERATIONS_TYPE } from '../models/activity_history';
+import { User } from '../models/user';
 
 type ActivityHistoryType = {
   description?: string;
