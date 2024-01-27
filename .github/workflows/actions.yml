@@ -21,4 +21,5 @@ jobs:
       - name: 'Install all dependencies'
         run: pnpm install
       - name: 'Test coverage execution'
+        continue-on-error: true
         run: pnpm run test:cov

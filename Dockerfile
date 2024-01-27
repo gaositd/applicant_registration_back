@@ -4,7 +4,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install 
+RUN corepack enable && corepack prepare pnpm@7.4.1 --activate
+
+RUN pnpm install 
 
 COPY . .
 
