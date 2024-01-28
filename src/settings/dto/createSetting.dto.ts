@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { CONFIG, CONFIG_TYPE } from 'src/models/configs';
+import { CONFIG, CONFIG_TYPE } from '../../models/configs';
 
 export class CreateSettingDto {
   @IsString()

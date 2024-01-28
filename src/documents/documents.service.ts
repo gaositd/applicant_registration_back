@@ -18,8 +18,8 @@ import { ActivityHistoryService } from '../activity-history/activity-history.ser
 import * as path from 'path';
 import { getCurrentPeriod, getFileName } from '../utils/users.utils';
 import * as fs from 'fs';
-import { NotificationsService } from 'src/notifications/notifications.service';
-import { SemestreService } from 'src/semestre/semestre.service';
+import { NotificationsService } from '../notifications/notifications.service';
+import { SemestreService } from '../semestre/semestre.service';
 
 @Injectable()
 export class DocumentsService {

@@ -17,14 +17,14 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { FileType } from 'src/models/user_documents';
-import { RequestType } from 'src/types';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { FileType } from '../models/user_documents';
+import { RequestType } from '../types';
 import {
   ParamDocumentUpdateDTO,
   UpdateDocumentDTO,
-} from 'src/users/dto/updateData.dto';
-import { Roles } from 'src/users/guards/roles.decorator';
+} from '../users/dto/updateData.dto';
+import { Roles } from '../users/guards/roles.decorator';
 import { DocumentsService } from './documents.service';
 import { Response } from 'express';
 

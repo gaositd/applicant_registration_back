@@ -8,11 +8,11 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { CreateNotificationDTO } from './dto/createNotification.dto';
 import { NotificationsService } from './notifications.service';
-import { Roles } from 'src/users/guards/roles.decorator';
-import { RequestType } from 'src/types';
+import { Roles } from '../users/guards/roles.decorator';
+import { RequestType } from '../types';
 
 @UseGuards(AuthenticatedGuard)
 @Controller('notifications')

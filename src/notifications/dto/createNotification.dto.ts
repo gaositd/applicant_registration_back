@@ -1,5 +1,8 @@
 import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
-import { ENotificationType, TNotificationType } from 'src/models/notification';
+import {
+  ENotificationType,
+  TNotificationType,
+} from '../../models/notification';
 
 export class CreateNotificationDTO {
   @IsString()

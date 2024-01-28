@@ -1,10 +1,10 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateNotificationDTO } from './dto/createNotification.dto';
-import { User } from 'src/models/user';
-import { Notification } from 'src/models/notification';
-import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
-import { NOTIFICATION_OPERATIONS_MESSAGES } from 'src/constants';
+import { User } from '../models/user';
+import { Notification } from '../models/notification';
+import { ActivityHistoryService } from '../activity-history/activity-history.service';
+import { NOTIFICATION_OPERATIONS_MESSAGES } from '../constants';
 
 @Injectable()
 export class NotificationsService {

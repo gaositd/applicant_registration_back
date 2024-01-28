@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CONFIG_TYPE, Configs } from 'src/models/configs';
+import { CONFIG_TYPE, Configs } from '../models/configs';
 import { CreateSettingDto } from './dto/createSetting.dto';
 
 @Injectable()
