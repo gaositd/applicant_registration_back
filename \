@@ -1,0 +1,27 @@
+import { User } from '../../models/user';
+
+export const UserMock: User = {
+  id: 1,
+  apellidoPaterno: 'Perez',
+  apellidoMaterno: 'Perez',
+  fechaNacimiento: new Date(),
+  curp: 'PEPP980101HDFRTR00',
+  direccion: 'Calle 123',
+  celular: '1234567890',
+  telefono: '1234567890',
+  foto: 'https://picsum.photos/200',
+  sexo: 'masculino',
+  trabaja: false,
+  estadoCivil: 'soltero',
+  estado: 'Durango',
+  escuelaProcedencia: 'Escuela 1',
+  promedio: 9.0,
+  email: 'test@test.com',
+  matricula: '1234567890',
+  password: '1234567890',
+  lenguaIndigena: false,
+  consecutivoFolio: 1,
+  isDeleted: false,
+  role: 'prospecto',
+  status: 'pending',
+};

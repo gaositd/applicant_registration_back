@@ -1,13 +1,13 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { BadGatewayException, Injectable, Logger } from '@nestjs/common';
-import { Configs } from 'src/models/configs';
+import { Configs } from '../models/configs';
 import {
   CONFIG_APPS_CONSTANTS,
   ERROR_MESSAGES,
   SEMESTER_STATUS,
-} from 'src/constants';
-import { USER_STATUS, User } from 'src/models/user';
-import { FileStatus, UserDocuments } from 'src/models/user_documents';
+} from '../constants';
+import { USER_STATUS, User } from '../models/user';
+import { FileStatus, UserDocuments } from '../models/user_documents';
 
 @Injectable()
 export class SemestreService {
@@ -35,7 +35,6 @@ export class SemestreService {
       .findOne(Configs, { name: CONFIG_APPS_CONSTANTS.semestreStatus });
 
     status.value = SEMESTER_STATUS.OPEN;
-    //TODO: Create a validation to check if all the requirend configurations are set
 
     const appConfigs = await this.em
       .fork()

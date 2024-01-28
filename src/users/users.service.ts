@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { hash } from 'bcrypt';
-import { ActivityHistoryService } from 'src/activity-history/activity-history.service';
-import { USER_OPERATIONS_MESSAGES } from 'src/constants';
-import { MailService } from 'src/mail/mail.service';
-import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from 'src/models/user';
-import { FileType, UserDocuments } from 'src/models/user_documents';
+import { ActivityHistoryService } from '../activity-history/activity-history.service';
+import { USER_OPERATIONS_MESSAGES } from '../constants';
+import { MailService } from '../mail/mail.service';
+import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from '../models/user';
+import { FileType, UserDocuments } from '../models/user_documents';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { SemestreService } from './semestre.service';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { Roles } from 'src/users/guards/roles.decorator';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { Roles } from '../users/guards/roles.decorator';
 
 @UseGuards(AuthenticatedGuard)
 @Roles('admin')

@@ -12,7 +12,7 @@ import {
   USER_CIVIL_STATUS_TYPE,
   USER_SEXO,
   USER_SEXO_TYPE,
-} from 'src/models/user';
+} from '../../models/user';
 
 export class UserRegisterDTO {
   @IsString()

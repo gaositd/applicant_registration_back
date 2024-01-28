@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from 'src/models/user';
+import { User } from '../../models/user';
 
 @Injectable()
 export class ExcludeDeletedusers implements NestInterceptor {

@@ -1,5 +1,5 @@
 import path from 'path';
-import { PREPAS_UJED } from 'src/constants';
+import { PREPAS_UJED } from '../constants';
 
 export function generateHeader(pdfDoc: PDFKit.PDFDocument) {
   pdfDoc

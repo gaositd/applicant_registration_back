@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import { compare } from 'bcrypt';
-import { USER_ROLES_TYPE } from 'src/models/user';
+import { USER_ROLES_TYPE } from '../models/user';
 
 interface userData {
   id: number;

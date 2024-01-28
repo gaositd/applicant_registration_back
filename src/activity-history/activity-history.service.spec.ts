@@ -1,12 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActivityHistoryService } from './activity-history.service';
+import { EntityManager } from '@mikro-orm/postgresql';
 
 describe('ActivityHistoryService', () => {
   let service: ActivityHistoryService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ActivityHistoryService],
+      providers: [
+        ActivityHistoryService,
+        {
+          provide: EntityManager,
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<ActivityHistoryService>(ActivityHistoryService);

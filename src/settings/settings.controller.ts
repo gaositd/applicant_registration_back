@@ -12,7 +12,7 @@ import { SettingsService } from './settings.service';
 import { CONFIG_TYPE } from 'src/models/configs';
 import { CreateSettingDto } from './dto/createSetting.dto';
 import { UpdateSettingDto } from './dto/updateSetting.dto';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 
 @UseGuards(AuthenticatedGuard)
 @Controller('settings')

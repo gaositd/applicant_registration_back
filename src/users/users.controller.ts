@@ -13,15 +13,15 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthenticatedGuard } from 'src/auth/guards/authenticated.guard';
-import { QueryUserType, RequestType } from 'src/types';
+import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
+import { QueryUserType, RequestType } from '../types';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
 import { Roles } from './guards/roles.decorator';
 import { UsersService } from './users.service';
 import { ExcludeDeletedusers } from './interceptors/filterDeleteUser.interceptor';
-import { USER_ROLES_TYPE } from 'src/models/user';
+import { USER_ROLES_TYPE } from '../models/user';
 import { IsPublic } from './guards/public.decorator';
 
 @UseGuards(AuthenticatedGuard)

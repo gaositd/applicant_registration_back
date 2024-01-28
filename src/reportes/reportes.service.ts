@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import PDFKit from 'pdfkit';
-import { User } from 'src/models/user';
+import { User } from '../models/user';
 import {
   UserFichaPagoParams,
   generateContent,
@@ -18,8 +18,8 @@ import {
   generateFolio,
   getCurrentPeriod,
 } from './reportes.utils';
-import { Configs } from 'src/models/configs';
-import { CONFIG_APPS_CONSTANTS, ERROR_MESSAGES } from 'src/constants';
+import { Configs } from '../models/configs';
+import { CONFIG_APPS_CONSTANTS, ERROR_MESSAGES } from '../constants';
 
 @Injectable()
 export class ReportesService {
