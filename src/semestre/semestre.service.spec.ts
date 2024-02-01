@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Test, TestingModule } from '@nestjs/testing';
-// import { SEMESTER_STATUS } from 'src/constants';
+import { SEMESTER_STATUS } from './../constants';
 // import { SemestreMock } from 'src/users/testing/semestreService.mock';
 import { SemestreService } from './semestre.service';
 
@@ -17,7 +17,7 @@ describe('SemestreService', () => {
           provide: EntityManager,
           useValue: {
             fork: jest.fn(() => ({
-              findOne: jest.fn().mockReturnValue("SemestreMock"),
+              findOne: jest.fn().mockReturnValue(SEMESTER_STATUS),
             })),
             find: jest.fn(),
           },
@@ -34,26 +34,24 @@ describe('SemestreService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('fidOne', async() => {
-    it('Should return a Status', async() =>{
+  describe('getSemestreStatus', () => {
+    it('Should return a status', async() =>{
       const semestre = await service.getSemestreStatus();
-      expect(semestre).toEqual("");
+      expect(semestre).toEqual(undefined);
     } );
   } );
 
-  describe('findOne', () => {
-    it('Should return a Abierto', async() => {
+  describe('startSemestre', () => {
+    it('Should return a abierto', async() => {
       const semestre = await service.startSemestre();
-      // expect(semestre).toEqual(SEMESTER_STATUS.OPEN);
-      expect(semestre).toEqual("Abierto");
+      expect(semestre).toEqual(SEMESTER_STATUS.OPEN);
     } );
   });
 
-  describe('fidOne', async() => {
-    it('Should return a Cerrado', async() =>{
+  describe('endSemestre', () => {
+    it('Should return a cerrado', async() =>{
       const semestre = await service.endSemestre();
-      // expect(semestre).toEqual(SEMESTER_STATUS.CLOSED);
-      expect(semestre).toEqual("Cerrado");
+      expect(semestre).toEqual(SEMESTER_STATUS.CLOSED);
     } );
   } );
 
