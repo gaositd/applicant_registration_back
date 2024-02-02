@@ -1,6 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ReportesService } from './reportes.service';
 import { EntityManager } from '@mikro-orm/postgresql';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ReportesMock } from '../users/testing/reportesService.mock';
+import { ReportesService } from './reportes.service';
 
 describe('ReportesService', () => {
   let service: ReportesService;
@@ -21,5 +22,12 @@ describe('ReportesService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  describe ('getFichaPago', () => {
+    it('Should return an object of document', async () =>{
+      const fichaPago = await service.getFichaPago(id:number,);
+      expect(fichaPago).toEqual(ReportesMock);
+    });
   });
 });

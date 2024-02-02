@@ -42,7 +42,7 @@ describe('SemestreService', () => {
   } );
 
   describe('startSemestre', () => {
-    it('Should return a abierto', async() => {
+    it('Should return an abierto', async() => {
       const semestre = await service.startSemestre();
       expect(semestre).toEqual(SEMESTER_STATUS.OPEN);
     } );
