@@ -38,14 +38,41 @@ describe('DocumentsService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('findDocs', () =>{});
+  describe('findDocs', () =>{
+    it('Should return an document object', () =>{
+      jest.spyOn(em, 'find').mockImplementation(async () => {});
+      const doc = await service.findDocs();
+      expect(doc).toEqual({});
+    });
+  });
 
-  describe('findDocsById', () => {});
+  describe('findDocsById', () => {
+    it('Should return an document object', () =>{
+      jest.spyOn(em, 'find').mockImplementation(async () => {});
+      const doc = await service.findDocsById();
+      expect(doc).toEqual({});
+    });
+  });
 
-  describe('updateDocumentStatus', () =>{});
+  describe('updateDocumentStatus', () =>{
+    it('Should return an update document status', () =>{
+      const doc = await service.updateDocumentStatus();
+      expect(doc).toEqual(true);
+    });
+  });
 
-  describe('uploadDocument', () =>{});
+  describe('uploadDocument', () =>{
+    it('Should return an object Upload File', () =>{
+      const doc = await service.uploadDocument();
+      expect(doc).toEqual({});
+    });
+  });
 
-  describe('findDocsFile', () => {});
+  describe('findDocsFile', () => {
+    it('Should return a object Documet File', () =>{
+      const doc = await service.findDocsFile();
+      expect(doc).toEqual({});
+    });
+  });
   
 });
