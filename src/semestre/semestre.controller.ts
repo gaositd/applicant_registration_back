@@ -1,7 +1,7 @@
 import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { SemestreService } from './semestre.service';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 import { Roles } from '../users/guards/roles.decorator';
+import { SemestreService } from './semestre.service';
 
 @UseGuards(AuthenticatedGuard)
 @Roles('admin')
@@ -14,12 +14,12 @@ export class SemestreController {
     return await this.semestreService.getSemestreStatus();
   }
 
-  @Post()
+  @Post('startSemestre')
   async startSemestre() {
     return await this.semestreService.startSemestre();
   }
 
-  @Post('/end')
+  @Post('/endSemestre')
   async endSemestre() {
     return await this.semestreService.endSemestre();
   }
