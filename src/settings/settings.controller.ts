@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,7 +12,6 @@ import {
 import { SettingsService } from './settings.service';
 import { CONFIG_TYPE } from 'src/models/configs';
 import { CreateSettingDto } from './dto/createSetting.dto';
-import { UpdateSettingDto } from './dto/updateSetting.dto';
 import { AuthenticatedGuard } from '../auth/guards/authenticated.guard';
 
 @UseGuards(AuthenticatedGuard)
@@ -37,8 +37,9 @@ export class SettingsController {
   @Put('/:key')
   async updateSetting(
     @Param('key') key: string,
-    @Body() { value }: UpdateSettingDto,
+    @Query('value') value: string,
   ) {
+    if(!value) throw new BadRequestException('Value is required');
     return await this.settingsService.updateSetting(key, value);
   }
 }
