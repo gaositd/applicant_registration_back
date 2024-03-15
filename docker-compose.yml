@@ -1,40 +1,41 @@
-version: '3.7'
+version: '3.5'
 
 services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=prescriptiondb
+    container_name: postgres-back
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
   app:
-    container_name: pre-scription-back
     build:
       context: .
-
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-
-    ports:
-      - 4242:4242
-
-    # env_file:
-    #   - .env
-
-    networks:
-      - pre-scription-service
-
-  postgres:
-    container_name: postgres
-    image: postgres:12
-    networks:
-      - pre-scription-service
+      dockerfile: Dockerfile
+    container_name: prescription_back
     environment:
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_USER: 'postgres'
-      POSTGRES_DB: 'prescriptiondb'
-      PG_DATA: /var/lib/postgresql/data
+      - PORT=${PORT}
     ports:
-      - 5432:5432
+      - '4242:4242'
+    depends_on:
+      - db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./src:/app/src
 
-networks:
-  pre-scription-service:
-volumes:
-  pgdata:
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
