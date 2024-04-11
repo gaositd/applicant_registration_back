@@ -1,7 +1,7 @@
 ### UJED Prescriptions API - NestJS
 
-
 ## Funcionalidades pendientes
+
 - [x] Agregar proceso de finalizacion de semestre
 - [x] Agregar proceso de inicializacion de semestre
 - [ ] Agregar test unitarios para api de documentos
@@ -14,7 +14,6 @@
 - [ ] Menu en el panel de administrador para iniciar/finalizar semestre
 - [ ] Request en panel de usuario para leer notificaciones
 - [ ] Agregar Menu en el panel de administradores para crear notificaciones
-
 
 ## Description
 
@@ -105,6 +104,10 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Como se generan los tokens para el servicio de email
+
+TODO: Agregar como se generan los tokens para el servicio de email
 
 ## Stay in touch
 
