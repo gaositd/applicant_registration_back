@@ -24,7 +24,11 @@ import path from 'path';
     NotificationsModule,
     MailModule,
     MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+      },
       defaults: {
         from: '"No Reply" <test@test.com>',
       },
