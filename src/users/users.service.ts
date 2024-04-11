@@ -9,7 +9,11 @@ import {
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { hash } from 'bcrypt';
 import { ActivityHistoryService } from '../activity-history/activity-history.service';
-import { USER_OPERATIONS_MESSAGES } from '../constants';
+import {
+  MAIL_SUBJECTS,
+  MAIL_TEMPLATES,
+  USER_OPERATIONS_MESSAGES,
+} from '../constants';
 import { MailService } from '../mail/mail.service';
 import { USER_ROLES_TYPE, USER_STATUS_TYPE, User } from '../models/user';
 import { FileType, UserDocuments } from '../models/user_documents';
@@ -106,13 +110,14 @@ export class UsersService {
 
       await this.mailService.sendMail({
         to: newUser.email,
-        subject: 'Pre-registro facultad de matematicas UJED',
-        template: 'user-register',
+        subject: MAIL_SUBJECTS.CREATE_USER,
+        template: MAIL_TEMPLATES.CREATE_USER,
         context: {
           name: newUser.nombre,
           matricula: newUser.matricula,
           password,
           loginUrl: `${this.configService.get<string>('CLIENT_URL')}/login}`,
+          qaMail: `${this.configService.get<string>('MAIL_TEMPLATE_QA_EMAIL')}`,
         },
       });
 

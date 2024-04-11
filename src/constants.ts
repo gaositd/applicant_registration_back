@@ -50,3 +50,11 @@ export const SEMESTER_STATUS = {
   OPEN: 'abierto',
   CLOSED: 'cerrado',
 };
+
+export const MAIL_SUBJECTS = {
+  CREATE_USER: 'Pre-registro facultad de ciencias exactas UJED',
+};
+
+export const MAIL_TEMPLATES = {
+  CREATE_USER: 'user-register',
+};

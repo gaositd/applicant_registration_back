@@ -32,15 +32,7 @@ export class MailService {
       refresh_token: this.configService.get('MAIL_REFRESH_TOKEN'),
     });
 
-    const accessToken: string = await new Promise((resolve, reject) => {
-      oauth2Client.getAccessToken((err, token) => {
-        if (err) {
-          reject('Failed to create access token');
-        }
-        resolve(token);
-      });
-    });
-
+    const accessToken = (await oauth2Client.getAccessToken()).token;
     const config: Options = {
       service: 'gmail',
       auth: {
@@ -59,7 +51,7 @@ export class MailService {
     try {
       const mailOptions: ISendMailOptions = {
         transporterName: 'gmail',
-        to: 'elcorreodezomodan@gmail.com', // list of receivers
+        to, // list of receivers
         from: this.configService.get('MAIL_CLIENT_EMAIL'), // sender address
         subject, // Subject line
         template,

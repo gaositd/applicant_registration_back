@@ -24,7 +24,7 @@
     "migration:create-init": "npx mikro-orm migration:create --initial",
     "migration:down": "npx mikro-orm migration:down",
     "db:seed:create": "npx mikro-orm seeder:create",
-    "db:seed:up": "npx mikro-orm seeder:run"
+    "db:seed:up": "npx mikro-orm seeder:run --class=DevelopmentSeeder"
   },
   "dependencies": {
     "@mikro-orm/cli": "^5.8.7",
