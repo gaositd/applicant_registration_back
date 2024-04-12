@@ -4,9 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN corepack enable && corepack prepare pnpm@7.4.1 --activate
-
-RUN pnpm config set auto-install-peers true
+RUN corepack enable && corepack prepare pnpm@8.15.4 --activate
 
 RUN pnpm install 
 
