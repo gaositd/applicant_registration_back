@@ -7,7 +7,7 @@ export enum CONFIG {
   APP_CONFIG = 'app_config',
 }
 
-export type CONFIG_TYPE = Record<CONFIG, string>;
+export type CONFIG_TYPE = 'value' | 'user_config' | 'app_config';
 
 @Entity()
 export class Configs extends BaseModel {

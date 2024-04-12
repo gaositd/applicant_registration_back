@@ -2,6 +2,8 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { User } from '../models/user';
 import { hash } from 'bcrypt';
+import { CONFIG, Configs } from '../models/configs';
+import { CONFIG_APPS_CONSTANTS, SEMESTER_STATUS } from '../constants';
 
 export class DevelopmentSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -41,6 +43,12 @@ export class DevelopmentSeeder extends Seeder {
       matricula: 'YgvInAxNrBDg',
     });
 
-    await em.persistAndFlush([admin, secretaria]);
+    const Setting = em.create(Configs, {
+      name: CONFIG_APPS_CONSTANTS.semestreStatus,
+      value: SEMESTER_STATUS.OPEN,
+      configType: CONFIG.APP_CONFIG,
+    });
+
+    await em.persistAndFlush([admin, secretaria, Setting]);
   }
 }
