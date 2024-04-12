@@ -74,4 +74,7 @@ export class UserRegisterDTO {
 
   @IsBoolean()
   trabaja: boolean;
+
+  @IsString()
+  carrer: string;
 }

@@ -80,6 +80,14 @@ export enum USER_SEXO {
 }
 
 export type USER_SEXO_TYPE = `${USER_SEXO}`;
+
+export enum Carrer {
+  LM = 'Licenciatura en Matemáticas',
+  LCC = 'Licenciatura en ciencias de la Computación',
+}
+
+export type CARRER_TYPE = `${Carrer}`;
+
 @Entity()
 export class User extends BaseModel {
   @Property()
@@ -165,6 +173,12 @@ export class User extends BaseModel {
     defaultRaw: `'${USER_ROLES.PROSPECTO}'`,
   })
   role: USER_ROLES_TYPE;
+
+  @Enum({
+    items: () => Carrer,
+    nullable: true,
+  })
+  carrer: CARRER_TYPE;
 
   @ManyToMany({ entity: () => UserDocuments, owner: true })
   documentos = new Collection<UserDocuments>(this);
