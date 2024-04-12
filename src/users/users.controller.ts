@@ -59,7 +59,7 @@ export class UsersController {
 
   @Roles('secretaria', 'admin')
   @Get('/:id')
-  async findUser(@Param('id') id: string) {
+  async findUser(@Param('id') id: string): Promise<any> {
     const searchData = {};
 
     if (Number.isInteger(parseInt(id))) searchData['id'] = parseInt(id);

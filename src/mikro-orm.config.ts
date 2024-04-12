@@ -1,8 +1,7 @@
-import { Options } from '@mikro-orm/postgresql';
+import { defineConfig } from '@mikro-orm/postgresql';
 require('dotenv').config();
 
-const config: Options = {
-  type: 'postgresql',
+const config = defineConfig({
   entities: ['dist/models/*.js'],
   entitiesTs: ['src/models/*.ts'],
   port: 5432,
@@ -15,9 +14,11 @@ const config: Options = {
     fileName: (timestamp: string, name?: string) => {
       // force user to provide the name, otherwise we would end up with `Migration20230421212713_undefined`
       if (!name) {
-        throw new Error('Specify migration name via `mikro-orm migration:create --name=...`');
+        throw new Error(
+          'Specify migration name via `mikro-orm migration:create --name=...`',
+        );
       }
-  
+
       return `Migration${timestamp}_${name}`;
     },
   },
@@ -29,6 +30,6 @@ const config: Options = {
     emit: 'ts', // seeder generation mode
     fileName: (className: string) => className, // seeder file naming convention
   },
-};
+});
 
 export default config;
