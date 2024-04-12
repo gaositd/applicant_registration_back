@@ -1,4 +1,6 @@
+import { Migrator } from '@mikro-orm/migrations';
 import { defineConfig } from '@mikro-orm/postgresql';
+import { SeedManager } from '@mikro-orm/seeder';
 require('dotenv').config();
 
 const config = defineConfig({
@@ -7,6 +9,7 @@ const config = defineConfig({
   port: 5432,
   clientUrl: process.env.DB_CONN_STRING,
   debug: process.env.NODE_ENV !== 'production',
+  extensions: [Migrator, SeedManager],
   migrations: {
     path: './src/migrations',
     transactional: true,
