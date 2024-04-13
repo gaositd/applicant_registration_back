@@ -80,6 +80,14 @@ export enum USER_SEXO {
 }
 
 export type USER_SEXO_TYPE = `${USER_SEXO}`;
+
+export enum User_CARRERA {
+  LCC = 'Licenciatura en Ciencias de la Computación',
+  LM = 'Licenciatura en Matemáticas',
+}
+
+export type USER_CARRERA_TYPE = `${User_CARRERA}`;
+
 @Entity()
 export class User extends BaseModel {
   @Property()
@@ -158,6 +166,12 @@ export class User extends BaseModel {
 
   @Property({ nullable: true, type: 'boolean', default: false })
   isDeleted: boolean;
+
+  @Enum({
+    items: () => User_CARRERA,
+    nullable: true,
+  })
+  carrera: USER_CARRERA_TYPE;
 
   @Enum({
     items: () => USER_ROLES,

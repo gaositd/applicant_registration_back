@@ -27,6 +27,9 @@ import {
 import { Roles } from '../users/guards/roles.decorator';
 import { DocumentsService } from './documents.service';
 import { Response } from 'express';
+import fs from 'fs';
+import { IsPublic } from 'src/users/guards/public.decorator';
+import path from 'path';
 
 @UseGuards(AuthenticatedGuard)
 @Controller('docs')
@@ -39,6 +42,22 @@ export class DocumentsController {
     return this.documentService.findDocs(req.user.matricula);
   }
 
+  @IsPublic()
+  @Get('/avisoprivacidad')
+  async getAvisoPrivacidad(@Res() res: Response) {
+    const file = await fs.promises.readFile(
+      path.join(__dirname, '../../', '/assets/aviso_privacidad.pdf'),
+    );
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename=aviso_privacidad.pdf`,
+    );
+
+    res.status(200);
+    res.send(file);
+  }
   @Get('/file/:id')
   async getUserDocsFile(@Param('id') id: number, @Res() res: Response) {
     const fileInfo = await this.documentService.findDocsFile(id);

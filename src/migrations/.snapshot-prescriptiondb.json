@@ -17,24 +17,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "config_type": {
           "name": "config_type",
@@ -59,6 +57,15 @@
           "nullable": false,
           "mappedType": "string"
         },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
         "value": {
           "name": "value",
           "type": "varchar(255)",
@@ -78,6 +85,7 @@
           ],
           "composite": false,
           "keyName": "configs_name_unique",
+          "constraint": true,
           "primary": false,
           "unique": true
         },
@@ -87,12 +95,14 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {},
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -107,24 +117,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "observacion": {
           "name": "observacion",
@@ -145,12 +153,14 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {},
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -165,24 +175,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "nombre": {
           "name": "nombre",
@@ -213,13 +221,12 @@
         },
         "fecha_nacimiento": {
           "name": "fecha_nacimiento",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "curp": {
           "name": "curp",
@@ -402,6 +409,15 @@
           "nullable": true,
           "mappedType": "boolean"
         },
+        "consecutivo_folio": {
+          "name": "consecutivo_folio",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        },
         "is_deleted": {
           "name": "is_deleted",
           "type": "boolean",
@@ -411,6 +427,19 @@
           "nullable": true,
           "default": "false",
           "mappedType": "boolean"
+        },
+        "carrera": {
+          "name": "carrera",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "enumItems": [
+            "Licenciatura en Ciencias de la Computación",
+            "Licenciatura en Matemáticas"
+          ],
+          "mappedType": "enum"
         },
         "role": {
           "name": "role",
@@ -452,6 +481,7 @@
           ],
           "composite": false,
           "keyName": "user_curp_unique",
+          "constraint": true,
           "primary": false,
           "unique": true
         },
@@ -461,6 +491,7 @@
           ],
           "composite": false,
           "keyName": "user_matricula_unique",
+          "constraint": true,
           "primary": false,
           "unique": true
         },
@@ -470,12 +501,14 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {},
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -490,24 +523,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "type": {
           "name": "type",
@@ -583,6 +614,7 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -602,7 +634,8 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -617,24 +650,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "description": {
           "name": "description",
@@ -687,6 +718,7 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -718,7 +750,8 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -733,24 +766,22 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
           "default": "'NOW()'",
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamptz(0)",
+          "type": "date",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
-          "mappedType": "datetime"
+          "mappedType": "date"
         },
         "file_type": {
           "name": "file_type",
@@ -812,12 +843,14 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {},
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -850,6 +883,7 @@
             "documents_observaciones_id"
           ],
           "composite": true,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -882,7 +916,8 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -915,6 +950,7 @@
             "user_documents_id"
           ],
           "composite": true,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -947,7 +983,9 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     }
-  ]
+  ],
+  "nativeEnums": {}
 }

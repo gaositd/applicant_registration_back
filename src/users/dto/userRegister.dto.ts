@@ -8,10 +8,12 @@ import {
 import {
   ESTADO_TYPE,
   Estado,
+  USER_CARRERA_TYPE,
   USER_CIVIL_STATUS,
   USER_CIVIL_STATUS_TYPE,
   USER_SEXO,
   USER_SEXO_TYPE,
+  User_CARRERA,
 } from '../../models/user';
 
 export class UserRegisterDTO {
@@ -74,4 +76,7 @@ export class UserRegisterDTO {
 
   @IsBoolean()
   trabaja: boolean;
+
+  @IsEnum(User_CARRERA)
+  carrera: USER_CARRERA_TYPE;
 }
