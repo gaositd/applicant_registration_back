@@ -8,6 +8,12 @@ export const getCurrentPeriod = () => {
   return `Agosto-Diciembre-${currDate.getFullYear()}`;
 };
 
+export const getSemesterForMatricula = () => {
+  const currDate = new Date();
+  if (currDate.getMonth() >= 0 && currDate.getMonth() <= 7) return 'A';
+  return 'B';
+};
+
 export const getFileName = (documento: FileTypeInterface, fileName: string) => {
   const ext = fileName.split('.').pop();
 
