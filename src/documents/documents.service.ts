@@ -41,7 +41,7 @@ export class DocumentsService {
       );
 
       const isExpedienteBlocked =
-        await this.notificationsService.isUserExpedienteEnabled(user.id);
+        !(await this.notificationsService.isUserExpedienteEnabled(user.id));
 
       const isSemestreClosed = await this.semestreService.getSemestreStatus();
 
