@@ -82,8 +82,8 @@ export enum USER_SEXO {
 export type USER_SEXO_TYPE = `${USER_SEXO}`;
 
 export enum User_CARRERA {
-  LCC = 'Licenciatura en Ciencias de la Computación',
-  LM = 'Licenciatura en Matemáticas',
+  LCC = 'LCC',
+  LM = 'LM',
 }
 
 export type USER_CARRERA_TYPE = `${User_CARRERA}`;

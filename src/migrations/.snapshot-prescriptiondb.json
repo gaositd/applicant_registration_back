@@ -436,8 +436,8 @@
           "primary": false,
           "nullable": true,
           "enumItems": [
-            "Licenciatura en Ciencias de la Computación",
-            "Licenciatura en Matemáticas"
+            "LCC",
+            "LM"
           ],
           "mappedType": "enum"
         },
