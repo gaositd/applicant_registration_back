@@ -29,6 +29,7 @@ services:
       - db
     volumes:
       - ./src:/app/src
+      - uploads-volume:/usr/src/app/uploads
     networks:
       - applicant_registration
 
@@ -52,3 +53,9 @@ networks:
 
 volumes:
   pgdata:
+  uploads-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: 'bind'
+      device: '/home/face-preinscriptions-uploads/'

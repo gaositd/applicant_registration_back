@@ -79,7 +79,6 @@ export class SemestreService {
       }).where({
         $or: [
           { status: FileStatus.REVIEWING },
-          { status: FileStatus.APPROVED },
           { status: FileStatus.OPENTOUPLUAD },
         ],
       });

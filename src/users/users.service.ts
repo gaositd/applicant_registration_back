@@ -20,7 +20,12 @@ import { FileType, UserDocuments } from '../models/user_documents';
 import { adminRegisterDTO } from './dto/adminRegisterDTo';
 import { UpdateUserDTO } from './dto/updateData.dto';
 import { UserRegisterDTO } from './dto/userRegister.dto';
-import { createMatricula, generatePassword } from './utils';
+import {
+  createMatricula,
+  createMatriculaForAdmin,
+  generatePassword,
+} from './utils';
+import { getSemesterForMatricula } from 'src/utils/users.utils';
 
 @Injectable()
 export class UsersService {
@@ -83,11 +88,25 @@ export class UsersService {
         parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
       );
 
+      const consecutivo = await this.em.count(User, {
+        carrera: userData.carrera,
+        createdAt: {
+          $gte:
+            getSemesterForMatricula() === 'A'
+              ? new Date(new Date().getFullYear(), 0, 1)
+              : new Date(new Date().getFullYear(), 6, 1),
+          $lte:
+            getSemesterForMatricula() === 'A'
+              ? new Date(new Date().getFullYear(), 5, 30)
+              : new Date(new Date().getFullYear(), 11, 31),
+        },
+      });
+
       const newUser = this.em
         .fork()
         .create(User, { ...userData, password: hashedPassword });
 
-      newUser.matricula = createMatricula(12);
+      newUser.matricula = createMatricula(userData.carrera, consecutivo + 1);
 
       Object.keys(FileType).forEach((document) => {
         newUser.documentos.add(
@@ -165,7 +184,7 @@ export class UsersService {
 
       user.password = hashedPassword;
 
-      user.matricula = createMatricula(12);
+      user.matricula = createMatriculaForAdmin(12);
 
       await this.em.persistAndFlush(user);
 

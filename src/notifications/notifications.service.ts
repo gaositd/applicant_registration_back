@@ -79,7 +79,9 @@ export class NotificationsService {
         addressed: false,
       });
 
-      return user.length > 0;
+      console.log(user);
+
+      return user.length <= 0;
     } catch (error) {
       this.logger.error(error.message);
       throw new BadRequestException('Error al obtener las notificaciones');
