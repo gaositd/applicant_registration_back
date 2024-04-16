@@ -48,6 +48,7 @@ export class MailService {
   }
 
   async sendMail({ to, subject, template, context }: MailProps): Promise<void> {
+    console.log('Si llego al servicio de mail');
     try {
       const mailOptions: ISendMailOptions = {
         transporterName: 'gmail',
