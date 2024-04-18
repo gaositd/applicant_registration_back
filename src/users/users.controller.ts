@@ -23,12 +23,20 @@ import { UsersService } from './users.service';
 import { ExcludeDeletedusers } from './interceptors/filterDeleteUser.interceptor';
 import { USER_ROLES_TYPE } from '../models/user';
 import { IsPublic } from './guards/public.decorator';
+import { verify } from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
+import { TokenPayload } from 'src/auth/auth.service';
+import { PasswordResetDTO } from './dto/passwordReset.dto';
+import { ERROR_MESSAGES } from 'src/constants';
 
 @UseGuards(AuthenticatedGuard)
 @UseInterceptors(ExcludeDeletedusers)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Roles('admin', 'secretaria')
   @Get('/')
@@ -87,6 +95,28 @@ export class UsersController {
     return this.usersService.createAdmin(userData, req.user.id);
   }
 
+  @IsPublic()
+  @Put('/password/:token')
+  async resetPassword(
+    @Param('token') token: string,
+    @Body() { password }: PasswordResetDTO,
+  ) {
+    try {
+      const { id } = verify(
+        token,
+        this.configService.get<string>('JWT_SECRET'),
+      ) as TokenPayload;
+
+      return this.usersService.resetPassword(id, password);
+    } catch (e) {
+      if (e.name === 'TokenExpiredError') {
+        throw new ForbiddenException(
+          ERROR_MESSAGES.PASSWORD_RESET_EXPIRED_TOKEN,
+        );
+      }
+      throw new BadRequestException(ERROR_MESSAGES.PASSWORD_RESET_ERROR);
+    }
+  }
   @Roles('admin', 'secretaria')
   @Put('/:id')
   async updateUser(

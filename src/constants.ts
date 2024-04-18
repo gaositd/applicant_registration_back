@@ -11,6 +11,7 @@ export const USER_OPERATIONS_MESSAGES = {
   create: 'Se ha creado un nuevo prospecto',
   update: 'Se ha actualizado un usuario',
   delete: 'Se ha eliminado un usuario',
+  'reset-password': 'Se ha reseteado la contraseña de un usuario',
 };
 
 export const NOTIFICATION_OPERATIONS_MESSAGES = {
@@ -42,6 +43,9 @@ export const ERROR_MESSAGES = {
     'No se ha podido acceder a la información, intentalo de nuevo o ponte en contacto con el administador.',
   ERROR_STARTING_SEMESTER:
     'No se ha podido iniciar el semestre, hay configuraciones pendientes, revisa la configuración del sistema.',
+  PASSWORD_RESET_EXPIRED_TOKEN:
+    'El token enviado ha expirado, solicita uno nuevamente',
+  PASSWORD_RESET_ERROR: 'No se ha podido resetear la contraseña',
 };
 
 export const PREPAS_UJED = ['Nocturna', 'Diurna', 'CCH'];

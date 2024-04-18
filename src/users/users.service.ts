@@ -234,4 +234,33 @@ export class UsersService {
       throw new InternalServerErrorException('No se pudo eliminar el usuario');
     }
   }
+
+  async resetPassword(id: number, password: string) {
+    try {
+      const user = await this.em.fork().findOne(User, { id });
+      if (!user) throw new NotFoundException('El token no es valido');
+      const hashedPassword = await hash(
+        password,
+        parseInt(this.configService.get<string>('HASH_SALT_ROUNDS')),
+      );
+      user.password = hashedPassword;
+      await this.em.persistAndFlush(user);
+
+      await this.activityHistoryService.createActivityHistory({
+        action: 'update',
+        description: USER_OPERATIONS_MESSAGES['reset-password'],
+        updatedBy: user.id,
+        userAffected: user.id,
+      });
+
+      return {
+        message: 'La contraseña ha sido cambiada con exito',
+      };
+    } catch (error) {
+      console.error(error);
+      throw new InternalServerErrorException(
+        'No se pudo cambiar la contraseña',
+      );
+    }
+  }
 }

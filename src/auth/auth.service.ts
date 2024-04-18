@@ -17,6 +17,9 @@ interface userData {
   updatedAt: Date;
   role: USER_ROLES_TYPE;
 }
+export type TokenPayload = {
+  id: number;
+};
 
 @Injectable()
 export class AuthService {
